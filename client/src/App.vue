@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import {Dropdown, ListGroup, ListGroupItem} from "flowbite-vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+import NavbarComponent from "@/components/NavbarComponent.vue";
 </script>
 
 <template>
-  <dropdown text="Click me" placement="bottom" style="margin: 250px;">
-    <list-group>
-      <list-group-item>Item #1</list-group-item>
-      <list-group-item>Item #2</list-group-item>
-      <list-group-item>Item #3</list-group-item>
-    </list-group>
-  </dropdown>
-
-
+  <NavbarComponent/>
+  <RouterView v-slot="{Component}">
+    <Component :is="Component"/>
+  </RouterView>
+  <FooterComponent/>
 </template>
 
 <style scoped>
