@@ -9,15 +9,19 @@
     </span>
     <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
       <li>
-        <a href="#about" class="mr-4 hover:underline md:mr-6">O nás</a>
+        <RouterLink to="/#about" active-class="" class="mr-4 hover:underline md:mr-6">
+          O nás
+        </RouterLink>
       </li>
       <li>
-        <RouterLink to="/katalog" class="mr-4 hover:underline md:mr-6">
+        <RouterLink to="/katalog" active-class="" class="mr-4 hover:underline md:mr-6">
           Katalog
         </RouterLink>
       </li>
       <li>
-        <a href="#contact" class="hover:underline">Kontakt</a>
+        <RouterLink to="/#contact" active-class="" class="mr-4 hover:underline md:mr-6">
+          Kontakt
+        </RouterLink>
       </li>
     </ul>
   </footer>

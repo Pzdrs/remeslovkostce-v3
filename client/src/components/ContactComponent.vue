@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <section>
+  <section id="contact">
     <h1 class="text-3xl font-bold text-center">Kontaktujte nás</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:mx-32 my-4  ">
       <div class="flex flex-col items-center my-4">
@@ -30,8 +30,7 @@
         <h2 class="font-bold text-xl my-2">Adresa:</h2>
         <ul class="flex flex-col items-center justify-center">
           <li class="text-neutral-500 text-lg">Jatecká 399</li>
-          <li class="text-neutral-500 text-lg">Mšeno</li>
-          <li class="text-neutral-500 text-lg">277 35</li>
+          <li class="text-neutral-500 text-lg">277 35, Mšeno</li>
           <li class="text-neutral-500 text-lg">Česká Republika</li>
         </ul>
       </div>
@@ -47,7 +46,7 @@
         <ul class="flex flex-col items-center justify-center">
           <li class="text-neutral-500 text-lg">+420 315 693 889</li>
           <li class="text-neutral-500 text-lg">
-            <a href="mailto:obchod@remeslovkostce.cz" class="font-bold text-black hover:underline">obchod@remeslovkostce.cz</a>
+            <a href="mailto:obchod@remeslovkostce.cz" class="font-bold text-black hover:underline">petr.bohac@remeslovkostce.cz</a>
           </li>
         </ul>
       </div>

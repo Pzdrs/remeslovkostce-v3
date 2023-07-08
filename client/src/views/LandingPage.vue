@@ -20,12 +20,12 @@ import ContactComponent from "@/components/ContactComponent.vue";
       <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
         Naše zboží lze zakoupit v celé řadě obchodů po celé ČR. Pokud máte zájem o velkoobchodní podmínky prodeje,
         prosím kontaktujte nás na
-        <a href="mailto:obchod@remeslovkostce.cz">obchod@remeslovkostce.cz</a>.
+        <a href="mailto:obchod@remeslovkostce.cz" class="font-bold">obchod@remeslovkostce.cz</a>.
       </p>
       <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
         <RouterLink to="/katalog"
                     class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-          Katolog
+          Katalog
           <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                viewBox="0 0 14 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

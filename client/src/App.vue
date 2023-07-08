@@ -12,7 +12,6 @@ import NavbarComponent from "@/components/NavbarComponent.vue";
         <Component :is="Component"/>
       </RouterView>
     </main>
-
     <FooterComponent/>
   </div>
 </template>
