@@ -35,11 +35,9 @@ import ContactComponent from "@/components/ContactComponent.vue";
       </div>
     </div>
 
+    <CarouselComponent/>
 
     <ContactComponent/>
-
-
-    <CarouselComponent/>
   </section>
 </template>
 

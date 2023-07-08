@@ -6,10 +6,15 @@ import NavbarComponent from "@/components/NavbarComponent.vue";
 
 <template>
   <NavbarComponent/>
-  <RouterView v-slot="{Component}">
-    <Component :is="Component"/>
-  </RouterView>
-  <FooterComponent/>
+  <div class="flex flex-col min-h-screen">
+    <main class="flex-grow">
+      <RouterView v-slot="{Component}">
+        <Component :is="Component"/>
+      </RouterView>
+    </main>
+
+    <FooterComponent/>
+  </div>
 </template>
 
 <style scoped>
