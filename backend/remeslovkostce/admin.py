@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from remeslovkostce.models import ProductCategory, Product, ProductColor, ProductSizeLabel, ProductSize, Tag
+from remeslovkostce.models import ProductCategory, Product, ProductColor, ProductSizeLabel, ProductSize, Tag, \
+    SizeDisplayConfiguration
 
 
 # Register your models here.
@@ -31,6 +32,11 @@ class ProductSizeLabelAdmin(admin.ModelAdmin):
 
 @admin.register(ProductSize)
 class ProductSizeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(SizeDisplayConfiguration)
+class SizeDisplayConfigurationAdmin(admin.ModelAdmin):
     pass
 
 

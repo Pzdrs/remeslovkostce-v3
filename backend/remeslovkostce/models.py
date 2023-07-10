@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -28,6 +29,8 @@ class MultiGenderLabelModel(models.Model):
                 return self.label_feminine
             case Product.Gender.NEUTER:
                 return self.label_neuter
+            case _:
+                return f'{self.label_masculine} / {self.label_feminine} / {self.label_neuter}'
 
     def __str__(self):
         return f'{self.label_masculine} / {self.label_feminine} / {self.label_neuter}'
@@ -59,19 +62,51 @@ class ProductSize(models.Model):
     def sheet_count_display_name(self):
         return f'{self.sheet_count} listů'
 
-    def get_display_name(self, product: 'Product'):
-        if self.label is None:
-            size_attributes = []
-            if product.show_dimensions:
-                size_attributes.append(self.dimensions_display_name)
-            if product.show_sheet_count:
-                size_attributes.append(self.sheet_count_display_name)
+    def get_display_name(self, config: 'SizeDisplayConfiguration', product: 'Product' = None) -> str:
+        size_attributes = []
 
-            return ', '.join(size_attributes)
-        return self.label.genderize(product.gender)
+        if config:
+            if config.show_label and self.label:
+                size_attributes.append(self.label.genderize(product.gender if product else None))
+            if config.show_dimensions:
+                size_attributes.append(self.dimensions_display_name)
+            if config.show_sheet_count and self.sheet_count is not None:
+                size_attributes.append(self.sheet_count_display_name)
+        else:
+            if SizeDisplayConfiguration.DEFAULTS['show_label'] and self.label:
+                size_attributes.append(self.label.genderize(product.gender if product else None))
+            if SizeDisplayConfiguration.DEFAULTS['show_dimensions']:
+                size_attributes.append(self.dimensions_display_name)
+            if SizeDisplayConfiguration.DEFAULTS['show_sheet_count'] and self.sheet_count is not None:
+                size_attributes.append(self.sheet_count_display_name)
+        return ', '.join(size_attributes)
 
     def __str__(self):
         return f'{self.dimensions_display_name} {f"({self.sheet_count} listů)" if self.sheet_count is not None else ""} ({self.label or "bez popisku"})'
+
+
+class SizeDisplayConfiguration(models.Model):
+    DEFAULTS = {
+        'show_label': True,
+        'show_sheet_count': True,
+        'show_dimensions': False
+    }
+    size = models.ForeignKey(ProductSize, on_delete=models.CASCADE)
+    show_label = models.BooleanField(
+        default=DEFAULTS['show_label'],
+        help_text='Zahrnovat popisek velikosti do názvu produktu'
+    )
+    show_sheet_count = models.BooleanField(
+        default=DEFAULTS['show_sheet_count'],
+        help_text='Zahrnovat počet listů do názvu produktu'
+    )
+    show_dimensions = models.BooleanField(
+        default=DEFAULTS['show_dimensions'],
+        help_text='Zahrnovat rozměry do názvu produktu'
+    )
+
+    def __str__(self):
+        return self.size.get_display_name(self)
 
 
 class ProductColor(MultiGenderLabelModel):
@@ -90,7 +125,7 @@ class Tag(models.Model):
         return self.display_name or self.name
 
     def __str__(self):
-        return self.name
+        return self.name + f' ({self.display_name})' if self.display_name else ''
 
 
 class Product(models.Model):
@@ -108,21 +143,23 @@ class Product(models.Model):
     color = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, null=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
-    show_tags = models.BooleanField(default=True)
+    show_tags = models.BooleanField(default=True, help_text='Zahrnovat tagy do názvu produktu')
 
     size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True)
-    show_sheet_count = models.BooleanField(default=True)
-    show_dimensions = models.BooleanField(default=True)
+    size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, null=True)
 
     @property
     def display_name(self):
-        return f'{self.__get_color_display()} {self.__get_name_display()}, {self.__get_size_display()}{self.__get_tags_display()}'
+        color = self.__get_color_display()
+        name = self.__get_name_display()
+        size = self.__get_size_display()
+        tags = self.__get_tags_display()
+        return f'{color} {name}{f", {size}" if size else ""}{f", {tags}" if tags else ""}'
 
     def __get_tags_display(self):
         if not self.show_tags:
             return ''
-        tags = self.tags.all()
-        return (', ' if tags else '') + ', '.join([tag.get_display_name() for tag in tags])
+        return ', '.join([tag.get_display_name() for tag in self.tags.all()])
 
     def __get_color_display(self):
         return self.color.genderize(self.gender).capitalize()
@@ -131,7 +168,7 @@ class Product(models.Model):
         return self.name.lower()
 
     def __get_size_display(self):
-        return self.size.get_display_name(self).lower()
+        return self.size.get_display_name(self.size_display_configuration, self)
 
     def __str__(self):
         return self.display_name
