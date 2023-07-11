@@ -146,7 +146,7 @@ class Product(models.Model):
     show_tags = models.BooleanField(default=True, help_text='Zahrnovat tagy do názvu produktu')
 
     size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True)
-    size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, null=True)
+    size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, blank=True, null=True)
 
     @property
     def display_name(self):
@@ -165,7 +165,7 @@ class Product(models.Model):
         return self.color.genderize(self.gender).capitalize()
 
     def __get_name_display(self):
-        return self.name.lower()
+        return self.name
 
     def __get_size_display(self):
         return self.size.get_display_name(self.size_display_configuration, self)
