@@ -132,7 +132,7 @@ class Tag(models.Model):
 class ProductImage(models.Model):
     thumbnail = models.BooleanField(default=False)
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to=f'{settings.MEDIA_ROOT}/products/')
+    image = models.ImageField(upload_to='products')
 
     def validate_unique(self, exclude=None):
         if self.thumbnail and self.product.images.filter(thumbnail=True).exists():
