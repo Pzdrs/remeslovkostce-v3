@@ -6,7 +6,7 @@ from remeslovkostce.models import Product, ProductCategory, ProductImage, Produc
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = '__all__'
+        fields = ('id', 'thumbnail', 'image')
 
 
 class ProductSizeSerializer(serializers.ModelSerializer):
@@ -18,7 +18,9 @@ class ProductSizeSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'name', 'display_name', 'description', 'tags', 'size', 'color', 'thumbnail')
+        fields = (
+            'id', 'category', 'name', 'display_name', 'description', 'tags', 'size', 'color', 'thumbnail'
+        )
 
     display_name = serializers.SerializerMethodField()
     thumbnail = serializers.SerializerMethodField()
@@ -36,6 +38,16 @@ class ProductSerializer(serializers.ModelSerializer):
             'label': obj.color.genderize('F'),
             'hex': obj.color.hex
         } if obj.color else None
+
+
+class ProductDetailSerializer(ProductSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            'id', 'category', 'name', 'display_name', 'description', 'tags', 'size', 'color', 'thumbnail', 'images'
+        )
+
+    images = ProductImageSerializer(many=True)
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):
