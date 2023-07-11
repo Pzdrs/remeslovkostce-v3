@@ -17,12 +17,9 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.http import HttpResponse
 from django.urls import path, include
 
 urlpatterns = [
-    path('kokot/', lambda request: HttpResponse("kokot"), name="kokot"),
-    path('kokot/dement/', lambda request: HttpResponse("kokot"), name="kokot2"),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
