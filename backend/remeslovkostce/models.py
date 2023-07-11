@@ -155,12 +155,12 @@ class Product(models.Model):
 
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
 
-    color = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, null=True)
+    color = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, blank=True, null=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
     show_tags = models.BooleanField(default=True, help_text='Zahrnovat tagy do názvu produktu')
 
-    size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True)
+    size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True, blank=True)
     size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, blank=True,
                                                    null=True)
 
@@ -170,7 +170,11 @@ class Product(models.Model):
         name = self.__get_name_display()
         size = self.__get_size_display()
         tags = self.__get_tags_display()
-        return f'{color} {name}{f", {size}" if size else ""}{f", {tags}" if tags else ""}'
+        return f'{color + " " if color else ""}{name}{f", {size}" if size else ""}{f", {tags}" if tags else ""}'
+
+    @property
+    def thumbnail(self) -> ProductImage:
+        return self.images.filter(thumbnail=True).first()
 
     def __get_tags_display(self):
         if not self.show_tags:
@@ -178,10 +182,16 @@ class Product(models.Model):
         return ', '.join([tag.get_display_name() for tag in self.tags.all()])
 
     def __get_color_display(self):
-        return self.color.genderize(self.gender).capitalize()
+        return self.color.genderize(self.gender) if self.color else None
 
     def __get_name_display(self):
-        return self.name
+        name_display = self.name
+
+        # If no color is set, capitalize the first letter of the name
+        if not self.color:
+            name_display = name_display.capitalize()
+
+        return name_display
 
     def __get_size_display(self):
         return self.size.get_display_name(self.size_display_configuration, self)

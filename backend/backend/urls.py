@@ -17,19 +17,10 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.http import HttpResponse
-from django.urls import path
-
-
-def index(request):
-    return HttpResponse('wodap')
-
-def api(request):
-    return HttpResponse('api')
+from django.urls import path, include
 
 urlpatterns = [
-    path('', index),
-    path('api/', api),
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
 
