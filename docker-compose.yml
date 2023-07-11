@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  backend:
+    build: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - media:/app/media
+      - static:/app/static
+    env_file:
+      - backend/.env.prod
+#  client:
+#    build: client
+#    depends_on:
+#      - backend
+  nginx:
+    build: nginx
+    volumes:
+      - static:/static
+      - media:/media
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  media:
+  static:
