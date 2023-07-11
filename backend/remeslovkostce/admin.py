@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from remeslovkostce.models import ProductCategory, Product, ProductColor, ProductSizeLabel, ProductSize, Tag, \
-    SizeDisplayConfiguration
+    SizeDisplayConfiguration, ProductImage
 
 
 # Register your models here.
@@ -43,3 +43,8 @@ class SizeDisplayConfigurationAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ('product', 'thumbnail', 'image')

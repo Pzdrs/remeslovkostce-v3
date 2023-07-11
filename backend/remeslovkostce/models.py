@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -128,6 +129,20 @@ class Tag(models.Model):
         return self.name + f' ({self.display_name})' if self.display_name else ''
 
 
+class ProductImage(models.Model):
+    thumbnail = models.BooleanField(default=False)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to=f'{settings.MEDIA_ROOT}/products/')
+
+    def validate_unique(self, exclude=None):
+        if self.thumbnail and self.product.images.filter(thumbnail=True).exists():
+            raise ValidationError('Produkt může mít pouze jednu náhledovou fotku')
+        return super().validate_unique(exclude)
+
+    def __str__(self):
+        return f'{self.product.display_name} ({self.image.name})'
+
+
 class Product(models.Model):
     class Gender(models.TextChoices):
         MASCULINE = 'M', 'mužský'
@@ -146,7 +161,8 @@ class Product(models.Model):
     show_tags = models.BooleanField(default=True, help_text='Zahrnovat tagy do názvu produktu')
 
     size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True)
-    size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, blank=True, null=True)
+    size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, blank=True,
+                                                   null=True)
 
     @property
     def display_name(self):
