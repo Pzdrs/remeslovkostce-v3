@@ -55,7 +55,7 @@ class ProductDetailSerializer(ProductSerializer):
         return {
             'name': obj.variant_group.name,
             'products': obj.get_variants()
-        }
+        } if obj.variant_group else None
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):

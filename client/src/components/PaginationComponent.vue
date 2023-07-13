@@ -25,18 +25,8 @@ const props = defineProps({
 })
 
 const pageCount = computed(() => Math.ceil(props.objectCount / props.perPage))
-
 const isAtFirstPage = computed(() => props.currentPage === 1)
-
 const isAtLastPage = computed(() => props.currentPage === pageCount.value)
-
-function previousPage() {
-  console.log('previousPage')
-}
-
-function nextPage() {
-  console.log('nextPage')
-}
 </script>
 
 <template>

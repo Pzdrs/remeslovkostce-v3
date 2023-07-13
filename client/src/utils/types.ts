@@ -1,5 +1,5 @@
 interface ProductCategory {
-    id: Number,
+    id: number,
     name: string,
     description: string,
     products: number;
@@ -15,17 +15,30 @@ interface ProductSize {
 
 interface ProductColor {
     label: string,
-    hex: string,
+    hex: string | null,
+}
+
+interface VariantGroup {
+    name: string,
+    products: number[],
 }
 
 interface Product {
     id: number,
     category: ProductCategory,
-    name: string,
     displayName: string,
     description: string,
     tags: string[],
     size: ProductSize,
     color: ProductColor,
     thumbnail: string | null,
+    images: string[],
+    variants: VariantGroup | null
+}
+
+interface Filter {
+    id: number,
+    type: string,
+    label: string,
+    callback: (product: any) => boolean;
 }

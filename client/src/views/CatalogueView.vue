@@ -1,41 +1,49 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
 import CategoriesComponent from "@/components/CategoriesComponent.vue";
 import axios from "@/axios";
 
+import {deserializeProduct, store} from "@/store";
+import {Alert, Spinner} from "flowbite-vue";
+
 let loading = ref(true);
 let fetchFailed = ref(false);
-let products = ref<Product[]>([]);
-
-axios.get('/products')
-    .then(response => {
-      products.value = response.data.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          category: product.category
-        }
-      })
-      loading.value = false;
-    })
-    .catch(() => {
-      fetchFailed.value = true;
-    })
-
 
 const currentPage = ref(1);
 const perPage = ref(5);
+const activeFilters = ref<Filter[]>([]);
+
+const filteredProducts = computed(() => {
+  let products = store.products;
+  activeFilters.value.forEach(filter => {
+    products = products.filter(filter.callback);
+  })
+
+  return products;
+});
 
 const paginatedProducts = computed(
-    () => products.value.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
-)
+    () => filteredProducts.value.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
+);
+
+function removeFilter(filterId: number) {
+  activeFilters.value = activeFilters.value.filter(filter => filter.id !== filterId);
+}
+
+onMounted(() => {
+  axios.get('/products')
+      .then(response => {
+        store.products = response.data.map((product: any) => deserializeProduct(product))
+        loading.value = false;
+      })
+      .catch(() => fetchFailed.value = true)
+});
 
 </script>
 
 <template>
-  <section class="pb-8 bg-white dark:bg-gray-900 lg:pb-24" id="components">
+  <section class="pb-8 bg-white dark:bg-gray-900 lg:pb-24">
     <div class="px-4 mx-auto max-w-8xl">
       <div class="w-full mb-6">
         <div
@@ -49,13 +57,13 @@ const paginatedProducts = computed(
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
-              <label for="search" class="hidden">Hledat z {{ products.length }} produktů...:</label>
+              <label for="search" class="hidden">Hledat z {{ store.products.length }} produktů...:</label>
               <input
+                  :disabled="store.products.length === 0"
                   id="search"
                   type="text"
                   class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  :placeholder="'Hledat z ' + products.length + ' produktů...'"
-                  value=""
+                  :placeholder="'Hledat z ' + store.products.length + ' produktů...'"
               >
             </div>
           </div>
@@ -129,31 +137,37 @@ const paginatedProducts = computed(
         <div>
           <aside
               class="hidden lg:block col-span-1 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-5 flex-1">
-            <div class="mb-5">
-              <h5 class="uppercase text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
-                Kategorie
-              </h5>
-              <CategoriesComponent/>
-            </div>
+            <CategoriesComponent
+                :active-filters="activeFilters"
+                @category-change="f => activeFilters.push(f)"
+            />
           </aside>
         </div>
         <div class="col-span-5 lg:col-span-4">
           <div class="mb-4 flex items-center min-h-[28px]">
             <span class="text-sm font-medium text-gray-900 dark:text-white mr-3 flex-shrink-0">
-              Zobrazeno
-              {{ currentPage * perPage - perPage + 1 }}
-              až
-              {{ currentPage * perPage > products.length ? products.length : currentPage * perPage }}
-              produktů z
-              {{ products.length }}
-              celkem.
+              <span v-if="store.products.length === 0">
+                Nejsou zobrazeny žádné produkty.
+              </span>
+              <span v-else>
+                Zobrazeno
+                {{ currentPage * perPage - perPage + 1 }}
+                až
+                {{ currentPage * perPage > store.products.length ? store.products.length : currentPage * perPage }}
+                produktů z
+                {{ filteredProducts.length }}
+                celkem.
+              </span>
             </span>
             <div class="flex items-center flex-wrap space-x-3">
               <span
+                  v-for="filter in activeFilters"
+                  :key="filter.id"
                   class="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-900 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-white"
               >
-                General
+                {{ filter.label }}
                 <button
+                    @click="removeFilter(filter.id)"
                     type="button"
                     class="inline-flex items-center p-1 ml-2 text-sm text-gray-400 bg-transparent rounded-sm hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                     aria-label="Remove filter">
@@ -165,23 +179,28 @@ const paginatedProducts = computed(
                         fill="currentColor">
                     </path>
                   </svg>
-                  <span class="sr-only">Remove filter</span>
+                  <span class="sr-only">Zrušit filtr</span>
                 </button>
               </span>
             </div>
-            <button type="button"
-                    class="px-2 py-1 bg-white flex-shrink-0 rounded-md text-gray-500 border border-gray-400 text-sm font-medium hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-400 ml-3">
+            <button
+                @click="activeFilters = []"
+                v-if="activeFilters.length > 0"
+                type="button"
+                class="px-2 py-1 bg-white flex-shrink-0 rounded-md text-gray-500 border border-gray-400 text-sm font-medium hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-400 ml-3">
               Zrušit filtry
             </button>
           </div>
+          <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst produkty</Alert>
+          <Spinner v-if="loading && !fetchFailed" class="m-auto"/>
           <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-            <div v-for="product in paginatedProducts" :key="product.name">
-              {{ product.name }} ({{ product.category.name }})
+            <div v-for="product in paginatedProducts" :key="product.id">
+              {{ product.displayName }}
             </div>
           </div>
           <PaginationComponent
               :current-page="currentPage"
-              :object-count="products.length"
+              :object-count="filteredProducts.length"
               :per-page="perPage"
               @page-change="page => currentPage = page"
           />
