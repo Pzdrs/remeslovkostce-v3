@@ -6,12 +6,13 @@ import axios from "@/axios";
 
 import {deserializeProduct, store} from "@/store";
 import {Alert, Spinner} from "flowbite-vue";
+import ProductCard from "@/components/ProductCard.vue";
 
 let loading = ref(true);
 let fetchFailed = ref(false);
 
 const currentPage = ref(1);
-const perPage = ref(5);
+const perPage = ref(4);
 const activeFilters = ref<Filter[]>([]);
 
 const filteredProducts = computed(() => {
@@ -19,7 +20,6 @@ const filteredProducts = computed(() => {
   activeFilters.value.forEach(filter => {
     products = products.filter(filter.callback);
   })
-
   return products;
 });
 
@@ -43,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="pb-8 bg-white dark:bg-gray-900 lg:pb-24">
+  <section class="pb-8 mt-6 bg-white dark:bg-gray-900 lg:pb-24">
     <div class="px-4 mx-auto max-w-8xl">
       <div class="w-full mb-6">
         <div
@@ -193,9 +193,9 @@ onMounted(() => {
           </div>
           <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst produkty</Alert>
           <Spinner v-if="loading && !fetchFailed" class="m-auto"/>
-          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             <div v-for="product in paginatedProducts" :key="product.id">
-              {{ product.displayName }}
+              <ProductCard :product="product" />
             </div>
           </div>
           <PaginationComponent
