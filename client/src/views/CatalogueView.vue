@@ -1,42 +1,35 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
+import CategoriesComponent from "@/components/CategoriesComponent.vue";
+import axios from "@/axios";
 
-const categories: ProductCategory[] = [
-  {id: 0, name: 'Poznámkmové bločky', productCount: 0},
-  {id: 1, name: 'Bloky Flip-Chart', productCount: 0},
-  {id: 2, name: 'Boxy s náplní', productCount: 0},
-  {id: 3, name: 'Náplně do boxů', productCount: 0},
-  {id: 4, name: 'Ostatní produkty', productCount: 0},
-];
+let loading = ref(true);
+let fetchFailed = ref(false);
+let products = ref<Product[]>([]);
 
-const products: Product[] = [
-  {category: categories[0], name: 'Bila kostka, mala'},
-  {category: categories[0], name: 'Bila kostka, velka'},
-  {category: categories[0], name: 'Barevna kostka, velka'},
-  {category: categories[0], name: 'Bila vrtule, mala'},
-  {category: categories[0], name: 'Barevna vrtule, mala'},
-  {category: categories[0], name: 'Barevna vrtule, velka'},
-];
-
-interface ProductCategory {
-  id: Number,
-  name: string,
-  productCount: number;
-}
-
-interface Product {
-  category: ProductCategory,
-  name: string;
-}
+axios.get('/products')
+    .then(response => {
+      products.value = response.data.map((product: any) => {
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          category: product.category
+        }
+      })
+      loading.value = false;
+    })
+    .catch(() => {
+      fetchFailed.value = true;
+    })
 
 
 const currentPage = ref(1);
-
 const perPage = ref(5);
 
 const paginatedProducts = computed(
-    () => products.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
+    () => products.value.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
 )
 
 </script>
@@ -140,25 +133,7 @@ const paginatedProducts = computed(
               <h5 class="uppercase text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
                 Kategorie
               </h5>
-              <ul>
-                <li class="mb-3" v-for="category in categories" :key="category.id">
-                  <button
-                      type="button"
-                      class="flex items-center justify-between group w-full"
-                  >
-                    <span class="flex items-center">
-                      <span
-                          class="text-gray-900 dark:text-white text-base font-medium group-hover:text-blue-700 dark:group-hover:text-blue-600">
-                        {{ category.name }}
-                      </span>
-                    </span>
-                    <span
-                        class="text-base font-medium text-gray-500 dark:text-gray-400 group-hover:text-blue-700 dark:group-hover:text-blue-600">
-                      ({{ category.productCount }})
-                    </span>
-                  </button>
-                </li>
-              </ul>
+              <CategoriesComponent/>
             </div>
           </aside>
         </div>
