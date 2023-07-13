@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from remeslovkostce.models import ProductCategory, Product, ProductColor, ProductSizeLabel, ProductSize, Tag, \
-    SizeDisplayConfiguration, ProductImage
+    SizeDisplayConfiguration, ProductImage, VariantGroup
 
 
 # Register your models here.
@@ -48,3 +48,12 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     list_display = ('product', 'thumbnail', 'image')
+
+
+@admin.register(VariantGroup)
+class VariantGroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'products')
+
+    @admin.display()
+    def products(self, obj):
+        return obj.get_product_count()

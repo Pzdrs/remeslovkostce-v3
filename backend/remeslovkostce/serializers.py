@@ -44,10 +44,18 @@ class ProductDetailSerializer(ProductSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'category', 'name', 'display_name', 'description', 'tags', 'size', 'color', 'thumbnail', 'images'
+            'id', 'category', 'name', 'display_name', 'description', 'tags', 'size', 'color', 'thumbnail', 'images',
+            'variants'
         )
 
     images = ProductImageSerializer(many=True)
+    variants = serializers.SerializerMethodField()
+
+    def get_variants(self, obj: Product):
+        return {
+            'name': obj.variant_group.name,
+            'products': obj.get_variants()
+        }
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):

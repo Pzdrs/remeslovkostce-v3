@@ -142,6 +142,22 @@ class ProductImage(models.Model):
         return f'{self.product.display_name} ({self.image.name})'
 
 
+class VariantGroup(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    def get_product_ids(self, product: 'Product' = None):
+        products = self.product_set
+        if product:
+            products = products.exclude(pk=product.pk)
+        return list(products.values_list('pk', flat=True))
+
+    def get_product_count(self):
+        return self.product_set.count()
+
+
 class Product(models.Model):
     class Gender(models.TextChoices):
         MASCULINE = 'M', 'mužský'
@@ -160,8 +176,11 @@ class Product(models.Model):
     show_tags = models.BooleanField(default=True, help_text='Zahrnovat tagy do názvu produktu')
 
     size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True, blank=True)
-    size_display_configuration = models.ForeignKey(SizeDisplayConfiguration, on_delete=models.SET_NULL, blank=True,
-                                                   null=True)
+    size_display_configuration = models.ForeignKey(
+        SizeDisplayConfiguration, on_delete=models.SET_NULL, blank=True, null=True
+    )
+
+    variant_group = models.ForeignKey(VariantGroup, on_delete=models.SET_NULL, blank=True, null=True)
 
     @property
     def display_name(self):
@@ -174,6 +193,11 @@ class Product(models.Model):
     @property
     def thumbnail(self) -> ProductImage:
         return self.images.filter(thumbnail=True).first()
+
+    def get_variants(self):
+        if not self.variant_group:
+            return []
+        return self.variant_group.get_product_ids(self)
 
     def __get_tags_display(self):
         if not self.show_tags:
