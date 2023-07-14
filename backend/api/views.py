@@ -21,7 +21,7 @@ class ProductListView(ListAPIView):
 
 
 class ProductCategoryListView(ListAPIView):
-    queryset = ProductCategory.objects.all()
+    queryset = ProductCategory.objects.frontend_ordering()
     serializer_class = ProductCategorySerializer
 
 

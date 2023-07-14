@@ -2,12 +2,41 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 
+class ProductCategoryQuerySet(models.QuerySet):
+    def frontend_ordering(self):
+        by_products = self.annotate(product_count=models.Count('product')).order_by('-product_count')
+        # if a category has a tag with name 'others', regardless of its product count, it will be last
+
+
+class Tag(models.Model):
+    class Type(models.TextChoices):
+        CATEGORY = 'category', 'Tagy kategorií'
+        PRODUCT = 'product', 'Tagy produktů'
+        PRODUCT_COLOR = 'product_color', 'Tagy barev produktů'
+        PRODUCT_SIZE = 'product_size', 'Tagy velikostí produktů'
+        VARIANT_GROUP = 'variant_group', 'Tagy skupin variant'
+
+    name = models.CharField(max_length=64)
+    display_name = models.CharField(max_length=64, blank=True)
+    description = models.TextField(blank=True)
+    type = models.CharField(max_length=16, choices=Type.choices)
+
+    def get_display_name(self):
+        return self.display_name or self.name
+
+    def __str__(self):
+        return self.name + (f'({self.display_name})' if self.display_name else '')
+
+
 class ProductCategory(models.Model):
     class Meta:
         verbose_name_plural = 'Product categories'
 
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True)
+    tags = models.ManyToManyField(Tag, limit_choices_to={'type': Tag.Type.CATEGORY}, blank=True)
+
+    objects = ProductCategoryQuerySet.as_manager()
 
     def __str__(self):
         return self.name
@@ -53,6 +82,8 @@ class ProductSize(models.Model):
     height = models.PositiveIntegerField(blank=True, null=True)
     depth = models.PositiveIntegerField()
     unit = models.CharField(max_length=2, choices=Unit.choices, default=Unit.CENTIMETER)
+
+    tags = models.ManyToManyField(Tag, limit_choices_to={'type': Tag.Type.PRODUCT_SIZE}, blank=True)
 
     @property
     def dimensions_display_name(self):
@@ -111,21 +142,10 @@ class SizeDisplayConfiguration(models.Model):
 
 class ProductColor(MultiGenderLabelModel):
     hex = models.CharField(max_length=6, default='FFFFFF', blank=True, null=True)
+    tags = models.ManyToManyField(Tag, limit_choices_to={'type': Tag.Type.PRODUCT_COLOR}, blank=True)
 
     def __str__(self):
         return f'{super().__str__()} ({f"#{self.hex}" if self.hex is not None else "bez HEX"})'
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=64)
-    display_name = models.CharField(max_length=64, blank=True)
-    description = models.TextField(blank=True)
-
-    def get_display_name(self):
-        return self.display_name or self.name
-
-    def __str__(self):
-        return self.name + f' ({self.display_name})' if self.display_name else ''
 
 
 class ProductImage(models.Model):
@@ -144,6 +164,7 @@ class ProductImage(models.Model):
 
 class VariantGroup(models.Model):
     name = models.CharField(max_length=64)
+    tags = models.ManyToManyField(Tag, limit_choices_to={'type': Tag.Type.VARIANT_GROUP}, blank=True)
 
     def __str__(self):
         return self.name
@@ -172,7 +193,7 @@ class Product(models.Model):
 
     color = models.ForeignKey(ProductColor, on_delete=models.SET_NULL, blank=True, null=True)
 
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag, limit_choices_to={'type': Tag.Type.PRODUCT}, blank=True)
     show_tags = models.BooleanField(default=True, help_text='Zahrnovat tagy do názvu produktu')
 
     size = models.ForeignKey(ProductSize, on_delete=models.SET_NULL, null=True, blank=True)

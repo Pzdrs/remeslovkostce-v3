@@ -42,7 +42,7 @@ class SizeDisplayConfigurationAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'display_name', 'type')
 
 
 @admin.register(ProductImage)
