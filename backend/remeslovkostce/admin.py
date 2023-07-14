@@ -8,7 +8,7 @@ from remeslovkostce.models import ProductCategory, Product, ProductColor, Produc
 
 @admin.register(ProductCategory)
 class ProductCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'product_count')
 
 
 @admin.register(Product)

@@ -1,3 +1,4 @@
+from django.db import models
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -21,7 +22,7 @@ class ProductListView(ListAPIView):
 
 
 class ProductCategoryListView(ListAPIView):
-    queryset = ProductCategory.objects.frontend_ordering()
+    queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
 
 

@@ -2,24 +2,18 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 
-class ProductCategoryQuerySet(models.QuerySet):
-    def frontend_ordering(self):
-        by_products = self.annotate(product_count=models.Count('product')).order_by('-product_count')
-        # if a category has a tag with name 'others', regardless of its product count, it will be last
-
-
 class Tag(models.Model):
     class Type(models.TextChoices):
-        CATEGORY = 'category', 'Tagy kategorií'
-        PRODUCT = 'product', 'Tagy produktů'
-        PRODUCT_COLOR = 'product_color', 'Tagy barev produktů'
-        PRODUCT_SIZE = 'product_size', 'Tagy velikostí produktů'
-        VARIANT_GROUP = 'variant_group', 'Tagy skupin variant'
+        CATEGORY = 'category', 'Tag kategorie'
+        PRODUCT = 'product', 'Tag produktu'
+        PRODUCT_COLOR = 'product_color', 'Tag barvy produktu'
+        PRODUCT_SIZE = 'product_size', 'Tag velikosti produktu'
+        VARIANT_GROUP = 'variant_group', 'Tag skupiny variant'
 
     name = models.CharField(max_length=64)
+    type = models.CharField(max_length=16, choices=Type.choices)
     display_name = models.CharField(max_length=64, blank=True)
     description = models.TextField(blank=True)
-    type = models.CharField(max_length=16, choices=Type.choices)
 
     def get_display_name(self):
         return self.display_name or self.name
@@ -31,12 +25,16 @@ class Tag(models.Model):
 class ProductCategory(models.Model):
     class Meta:
         verbose_name_plural = 'Product categories'
+        ordering = ('order_weight',)
 
     name = models.CharField(max_length=64)
     description = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag, limit_choices_to={'type': Tag.Type.CATEGORY}, blank=True)
+    order_weight = models.IntegerField(default=0)
 
-    objects = ProductCategoryQuerySet.as_manager()
+    @property
+    def product_count(self):
+        return self.product_set.all().count()
 
     def __str__(self):
         return self.name
