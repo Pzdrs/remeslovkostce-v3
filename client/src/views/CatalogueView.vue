@@ -4,9 +4,10 @@ import PaginationComponent from "@/components/PaginationComponent.vue";
 import CategoriesComponent from "@/components/CategoriesComponent.vue";
 import axios from "@/axios";
 
-import {deserializeProduct, store} from "@/store";
+import {deserializeProduct, getProductCategory, store} from "@/store";
 import {Alert, Spinner} from "flowbite-vue";
 import ProductCard from "@/components/ProductCard.vue";
+import CategoryDescription from "@/components/CategoryDescription.vue";
 
 let loading = ref(true);
 let fetchFailed = ref(false);
@@ -14,6 +15,8 @@ let fetchFailed = ref(false);
 const currentPage = ref(1);
 const perPage = ref(4);
 const activeFilters = ref<Filter[]>([]);
+
+const currentCategory = ref<ProductCategory | null>(null);
 
 const filteredProducts = computed(() => {
   let products = store.products;
@@ -27,8 +30,24 @@ const paginatedProducts = computed(
     () => filteredProducts.value.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
 );
 
-function removeFilter(filterId: number) {
-  activeFilters.value = activeFilters.value.filter(filter => filter.id !== filterId);
+function removeFilter(filterId?: number) {
+  if (filterId === undefined) {
+    activeFilters.value = [];
+    currentCategory.value = null;
+  } else {
+    // if the filter is of type category, reset the current category
+    if (activeFilters.value[filterId].type === 'category') {
+      currentCategory.value = null;
+    }
+    activeFilters.value = activeFilters.value.filter(filter => filter.id !== filterId);
+  }
+  currentPage.value = 1;
+}
+
+function handleCategoryChange(filter: Filter, category: ProductCategory) {
+  activeFilters.value.push(filter);
+  currentCategory.value = category;
+  currentPage.value = 1;
 }
 
 onMounted(() => {
@@ -39,7 +58,6 @@ onMounted(() => {
       })
       .catch(() => fetchFailed.value = true)
 });
-
 </script>
 
 <template>
@@ -139,12 +157,12 @@ onMounted(() => {
               class="hidden lg:block col-span-1 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-5 flex-1">
             <CategoriesComponent
                 :active-filters="activeFilters"
-                @category-change="f => activeFilters.push(f)"
+                @category-change="(f, c) => handleCategoryChange(f, c)"
             />
           </aside>
         </div>
         <div class="col-span-5 lg:col-span-4">
-          <div class="mb-4 flex items-center min-h-[28px]">
+          <div class="flex mb-4 items-center min-h-[28px]">
             <span class="text-sm font-medium text-gray-900 dark:text-white mr-3 flex-shrink-0">
               <span v-if="store.products.length === 0">
                 Nejsou zobrazeny žádné produkty.
@@ -153,7 +171,7 @@ onMounted(() => {
                 Zobrazeno
                 {{ currentPage * perPage - perPage + 1 }}
                 až
-                {{ currentPage * perPage > store.products.length ? store.products.length : currentPage * perPage }}
+                {{ currentPage * perPage > filteredProducts.length ? filteredProducts.length : currentPage * perPage }}
                 produktů z
                 {{ filteredProducts.length }}
                 celkem.
@@ -184,18 +202,19 @@ onMounted(() => {
               </span>
             </div>
             <button
-                @click="activeFilters = []"
+                @click="removeFilter()"
                 v-if="activeFilters.length > 0"
                 type="button"
                 class="px-2 py-1 bg-white flex-shrink-0 rounded-md text-gray-500 border border-gray-400 text-sm font-medium hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-400 ml-3">
               Zrušit filtry
             </button>
           </div>
+          <CategoryDescription :category="currentCategory"/>
           <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst produkty</Alert>
           <Spinner v-if="loading && !fetchFailed" class="m-auto"/>
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
             <div v-for="product in paginatedProducts" :key="product.id">
-              <ProductCard :product="product" />
+              <ProductCard :product="product"/>
             </div>
           </div>
           <PaginationComponent

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from "@/axios";
 import {Alert, Spinner} from "flowbite-vue";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {deserializeProductCategory, getProductCategory, store} from "@/store";
 
 const props = defineProps({
@@ -16,13 +16,6 @@ let currentlyFiltering = computed(
 let loading = ref(true);
 let fetchFailed = ref(false);
 
-axios.get('/categories')
-    .then(response => {
-      store.categories = response.data.map((category: any) => deserializeProductCategory(category));
-      loading.value = false;
-    })
-    .catch(() => fetchFailed.value = true)
-
 function getFilter(category: number) {
   return {
     id: props.activeFilters?.length,
@@ -31,6 +24,15 @@ function getFilter(category: number) {
     callback: (product: Product) => product.category.id === category
   }
 }
+
+onMounted(() => {
+  axios.get('/categories')
+      .then(response => {
+        store.categories = response.data.map((category: any) => deserializeProductCategory(category));
+        loading.value = false;
+      })
+      .catch(() => fetchFailed.value = true);
+});
 </script>
 
 <template>
@@ -46,7 +48,7 @@ function getFilter(category: number) {
       >
         <button
             :disabled="currentlyFiltering"
-            @click="$emit('categoryChange', getFilter(category.id))"
+            @click="$emit('categoryChange', getFilter(category.id), category)"
             type="button"
             class="flex items-center justify-between group w-full disabled:hover:text-red-500"
         >

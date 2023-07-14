@@ -37,6 +37,7 @@ export function deserializeProductCategory(category: any) {
     return {
         id: category.id,
         name: category.name,
+        description: category.description,
         products: category.products
     }
 }

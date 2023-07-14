@@ -26,7 +26,7 @@ const props = defineProps({
       </p>
       <p v-else
          class="mb-3 font-normal text-gray-400 dark:text-gray-400">
-        Bez popisku
+        bez popisku
       </p>
     </div>
   </div>
