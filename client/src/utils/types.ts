@@ -11,6 +11,7 @@ interface ProductSize {
     height: number | null,
     depth: number,
     unit: 'mm' | 'cm' | 'm',
+    dimensions_display_name: string;
 }
 
 interface ProductColor {

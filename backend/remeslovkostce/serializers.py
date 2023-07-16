@@ -12,7 +12,12 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class ProductSizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductSize
-        fields = ('sheet_count', 'width', 'height', 'depth', 'unit')
+        fields = ('sheet_count', 'width', 'height', 'depth', 'unit', 'dimensions_display_name')
+
+    dimensions_display_name = serializers.SerializerMethodField()
+
+    def get_dimensions_display_name(self, obj: ProductSize):
+        return obj.dimensions_display_name
 
 
 class ProductSerializer(serializers.ModelSerializer):

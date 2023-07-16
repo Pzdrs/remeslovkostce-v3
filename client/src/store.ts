@@ -22,6 +22,7 @@ export function deserializeProduct(product: any) {
             height: product.size.height,
             depth: product.size.depth,
             unit: product.size.unit,
+            dimensions_display_name: product.size.dimensions_display_name
         },
         color: {
             label: product.color.label,
