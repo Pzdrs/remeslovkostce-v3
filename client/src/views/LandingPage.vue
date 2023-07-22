@@ -1,7 +1,4 @@
 <script setup lang="ts">
-
-import FooterComponent from "@/components/FooterComponent.vue";
-import NavbarComponent from "@/components/NavbarComponent.vue";
 import CarouselComponent from "@/components/CarouselComponent.vue";
 import ContactComponent from "@/components/ContactComponent.vue";
 </script>
@@ -23,7 +20,7 @@ import ContactComponent from "@/components/ContactComponent.vue";
         <a href="mailto:obchod@remeslovkostce.cz" class="font-bold">obchod@remeslovkostce.cz</a>.
       </p>
       <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-        <RouterLink to="/katalog"
+        <RouterLink :to="{name: 'catalogue'}"
                     class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
           Katalog
           <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"

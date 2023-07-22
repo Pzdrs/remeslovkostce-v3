@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import PaginationComponent from "@/components/PaginationComponent.vue";
 import CategoriesComponent from "@/components/CategoriesComponent.vue";
 import axios from "@/axios";
 
@@ -21,7 +20,6 @@ let viewType = ref('list');
 const currentPage = ref(1);
 const perPage = computed(() => PAGINATE_BY[viewType.value]);
 const activeFilters = ref<Filter[]>([]);
-
 const currentCategory = ref<ProductCategory | null>(null);
 
 const filteredProducts = computed(() => {
@@ -31,7 +29,6 @@ const filteredProducts = computed(() => {
   })
   return products;
 });
-
 const paginatedProducts = computed(
     () => filteredProducts.value.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
 );
@@ -244,7 +241,9 @@ onMounted(() => {
                         class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
                            alt="iMac Front Image" class="w-auto h-8 mr-3">
-                      {{ product.displayName }}
+                      <RouterLink :to="{name:'product-detail', params: {id: product.id}}">
+                        {{ product.displayName }}
+                      </RouterLink>
                     </th>
                     <td class="px-4 py-2">
                       <span
@@ -275,14 +274,6 @@ onMounted(() => {
               </div>
             </div>
           </div>
-
-
-          <PaginationComponent
-              :current-page="currentPage"
-              :object-count="filteredProducts.length"
-              :per-page="perPage"
-              @page-change="page => currentPage = page"
-          />
         </div>
       </div>
     </div>

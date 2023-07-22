@@ -1,6 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 import LandingPage from "@/views/LandingPage.vue";
 import CatalogueView from "@/views/CatalogueView.vue";
+import ProductDetailView from "@/views/ProductDetailView.vue";
+
+const TITLE_SUFFIX = 'Řemeslo v kostce';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,15 +11,33 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            name: "Domů",
-            component: LandingPage
+            name: 'home',
+            component: LandingPage,
+            meta: {
+                navbar: true,
+                title: 'Domů'
+            }
         },
         {
             path: "/katalog",
-            name: "Katalog",
-            component: CatalogueView
+            name: "catalogue",
+            component: CatalogueView,
+            meta: {
+                navbar: true,
+                title: 'Katalog'
+            }
+        },
+        {
+            path: '/produkt/:id',
+            name: 'product-detail',
+            component: ProductDetailView
         }
     ]
 });
+
+router.beforeEach((toRoute, fromRoute, next) => {
+    window.document.title = toRoute.meta && toRoute.meta.title ? `${toRoute.meta.title} | ${TITLE_SUFFIX}` : TITLE_SUFFIX;
+    next();
+})
 
 export default router;
