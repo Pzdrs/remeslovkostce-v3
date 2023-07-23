@@ -11,12 +11,12 @@ defineProps({
 </script>
 
 <template>
-  <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+  <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 h-[390px] relative">
     <img class="rounded-t-lg"
          :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
          alt="Product thumbnail"
     />
-    <div class="p-5">
+    <div class="p-5 absolute bottom-0">
       <ProductLink :product="product" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"/>
       <p v-if=" product.description.length> 0"
          class="mb-3 font-normal text-gray-700 dark:text-gray-400">
