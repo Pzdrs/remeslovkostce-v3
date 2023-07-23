@@ -110,12 +110,14 @@ onMounted(() => {
 
         <section v-if="product.variants">
           <h5 class="mt-5 text-xl font-medium">
-            Další varianty z kategorie <span class="font-extrabold">{{ product.variants.name }}</span>
+            <span v-if="variants.length <= 4">Další <span class="font-bold">{{ variants.length }}</span> varianty</span>
+            <span v-else>Dalších <span class="font-bold">{{ variants.length }}</span> variant</span>
+            z kategorie <span class="font-extrabold">{{ product.variants.name }}</span>
           </h5>
 
           <div class="mt-2 md:w-3/4">
             <div v-for="variant in variants" :key="variant.id"
-                 class="mb-4 rounded-lg border border-gray-200 p-3 dark:border-gray-700 dark:bg-gray-800 flex"
+                 class="mb-4 rounded-lg border border-gray-200 p-2 dark:border-gray-700 dark:bg-gray-800 flex"
             >
               <img class="rounded-lg h-12 w-auto"
                    src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
