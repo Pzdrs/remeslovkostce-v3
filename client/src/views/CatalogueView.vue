@@ -64,16 +64,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="pb-8 mt-6 bg-white dark:bg-gray-900 lg:pb-24">
-    <div class="px-4 mx-auto max-w-8xl">
-      <div class="w-full mb-6">
+  <section class="mt-6 bg-white pb-8 dark:bg-gray-900 lg:pb-24">
+    <div class="mx-auto px-4 max-w-8xl">
+      <div class="mb-6 w-full">
         <div
-            class="flex flex-col items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 lg:flex-row">
-          <div class="flex-shrink-0 w-full lg:w-auto lg:flex">
-            <div class="relative flex-shrink-0 w-full mb-4 lg:mb-0 lg:mr-5 lg:w-64 xl:w-96">
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            class="flex flex-col items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 lg:flex-row">
+          <div class="w-full flex-shrink-0 lg:flex lg:w-auto">
+            <div class="relative mb-4 w-full flex-shrink-0 lg:mr-5 lg:mb-0 lg:w-64 xl:w-96">
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                     stroke="currentColor" aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400">
+                     stroke="currentColor" aria-hidden="true" class="h-5 w-5 text-gray-500 dark:text-gray-400">
                   <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
@@ -83,16 +83,16 @@ onMounted(() => {
                   :disabled="store.products.length === 0"
                   id="search"
                   type="text"
-                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block w-full rounded-lg border border-gray-300 bg-white pl-10 text-sm text-gray-900 p-2.5 py-2.5 focus:border-blue-500 focus:ring-blue-500 dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   :placeholder="'Hledat z ' + store.products.length + ' produktů...'"
               >
             </div>
           </div>
-          <div class="text-sm text-gray-600 dark:text-gray-400 flex justify-center items-center">
+          <div class="flex items-center justify-center text-sm text-gray-600 dark:text-gray-400">
             <div class="w-fit" data-testid="flowbite-tooltip-target">
               <button type="button" @click="viewType = 'list'"
-                      class="text-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center mr-1 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                <svg aria-hidden="true" class="text-gray-500 dark:text-gray-400 w-5 h-5" viewBox="0 0 18 10" fill="none"
+                      class="mr-1 inline-flex items-center rounded-lg p-2 text-center text-sm font-medium text-white hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                <svg aria-hidden="true" class="h-5 w-5 text-gray-500 dark:text-gray-400" viewBox="0 0 18 10" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                   <path
                       d="M2.22913 0H1.18746C0.899811 0 0.666626 0.223858 0.666626 0.5V1.5C0.666626 1.77614 0.899811 2 1.18746 2H2.22913C2.51677 2 2.74996 1.77614 2.74996 1.5V0.5C2.74996 0.223858 2.51677 0 2.22913 0Z"
@@ -116,7 +116,7 @@ onMounted(() => {
                 <span class="sr-only">Toggle list view</span></button>
             </div>
             <div data-testid="flowbite-tooltip" tabindex="-1"
-                 class="absolute inline-block z-10 rounded-lg py-2 px-3 text-sm font-medium shadow-sm transition-opacity duration-300 invisible opacity-0 bg-gray-900 text-white dark:bg-gray-700"
+                 class="invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
                  id=":r0:" role="tooltip" style="position: absolute; top: 267px; left: 1290.16px;">
               <div class="relative z-20">Toggle list view</div>
               <div class="absolute z-10 h-2 w-2 rotate-45 bg-gray-900 dark:bg-gray-700"
@@ -125,8 +125,8 @@ onMounted(() => {
             </div>
             <div class="w-fit" data-testid="flowbite-tooltip-target">
               <button type="button" @click="viewType='grid'"
-                      class="text-white hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                <svg aria-hidden="true" class="text-gray-500 dark:text-gray-400 w-4 h-4" viewBox="0 0 16 16" fill="none"
+                      class="inline-flex items-center rounded-lg text-center text-sm font-medium text-white p-2.5 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                <svg aria-hidden="true" class="h-4 w-4 text-gray-500 dark:text-gray-400" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                   <path
                       d="M5.61917 0.5H2.0475C1.19284 0.5 0.5 1.19284 0.5 2.0475V5.61917C0.5 6.47383 1.19284 7.16667 2.0475 7.16667H5.61917C6.47383 7.16667 7.16667 6.47383 7.16667 5.61917V2.0475C7.16667 1.19284 6.47383 0.5 5.61917 0.5Z"
@@ -144,7 +144,7 @@ onMounted(() => {
                 <span class="sr-only">Toggle grid view</span></button>
             </div>
             <div data-testid="flowbite-tooltip" tabindex="-1"
-                 class="absolute inline-block z-10 rounded-lg py-2 px-3 text-sm font-medium shadow-sm transition-opacity duration-300 invisible opacity-0 bg-gray-900 text-white dark:bg-gray-700"
+                 class="invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
                  id=":r2:" role="tooltip" style="position: absolute; top: 267px; left: 1303.72px;">
               <div class="relative z-20">Toggle grid view</div>
               <div class="absolute z-10 h-2 w-2 rotate-45 bg-gray-900 dark:bg-gray-700"
@@ -154,10 +154,10 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-5 gap-6 mt-4">
+      <div class="mt-4 grid grid-cols-5 gap-6">
         <div>
           <aside
-              class="hidden lg:block col-span-1 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-5 flex-1">
+              class="col-span-1 hidden flex-1 rounded-lg border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800 lg:block">
             <CategoriesComponent
                 :active-filters="activeFilters"
                 @category-change="(f, c) => handleCategoryChange(f, c)"
@@ -165,8 +165,8 @@ onMounted(() => {
           </aside>
         </div>
         <div class="col-span-5 lg:col-span-4">
-          <div class="flex mb-4 items-center min-h-[28px]">
-            <span class="text-sm font-medium text-gray-900 dark:text-white mr-3 flex-shrink-0">
+          <div class="mb-4 flex items-center min-h-[28px]">
+            <span class="mr-3 flex-shrink-0 text-sm font-medium text-gray-900 dark:text-white">
               <span v-if="store.products.length === 0">
                 Nejsou zobrazeny žádné produkty.
               </span>
@@ -180,19 +180,19 @@ onMounted(() => {
                 celkem.
               </span>
             </span>
-            <div class="flex items-center flex-wrap space-x-3">
+            <div class="flex flex-wrap items-center space-x-3">
               <span
                   v-for="filter in activeFilters"
                   :key="filter.id"
-                  class="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-900 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-white"
+                  class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-sm font-medium text-gray-900 dark:bg-gray-800 dark:text-white"
               >
                 {{ filter.label }}
                 <button
                     @click="removeFilter(filter.id)"
                     type="button"
-                    class="inline-flex items-center p-1 ml-2 text-sm text-gray-400 bg-transparent rounded-sm hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                    class="ml-2 inline-flex items-center rounded-sm bg-transparent p-1 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                     aria-label="Remove filter">
-                  <svg aria-hidden="true" class="w-2.5 h-2.5 text-gray-500"
+                  <svg aria-hidden="true" class="text-gray-500 w-2.5 h-2.5"
                        viewBox="0 0 10 10"
                        fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -208,14 +208,14 @@ onMounted(() => {
                 @click="removeFilter()"
                 v-if="activeFilters.length > 0"
                 type="button"
-                class="px-2 py-1 bg-white flex-shrink-0 rounded-md text-gray-500 border border-gray-400 text-sm font-medium hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-400 ml-3">
+                class="ml-3 flex-shrink-0 rounded-md border border-gray-400 bg-white px-2 py-1 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800">
               Zrušit filtry
             </button>
           </div>
           <CategoryDescription :category="currentCategory"/>
           <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst produkty</Alert>
           <Spinner v-if="loading && !fetchFailed" class="m-auto"/>
-          <div v-if="viewType === 'grid'" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+          <div v-if="viewType === 'grid'" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
             <div v-for="product in paginatedProducts" :key="product.id">
               <ProductCard :product="product"/>
             </div>
@@ -224,8 +224,8 @@ onMounted(() => {
           <div v-else-if="viewType === 'list'" class="mx-auto">
             <div class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
               <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                  <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" class="px-4 py-3">Produkt</th>
                     <th scope="col" class="px-4 py-3">Kategorie</th>
@@ -236,36 +236,36 @@ onMounted(() => {
                   <tbody>
                   <tr
                       v-for="product in paginatedProducts" :key="product.id"
-                      class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                      class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
                     <th scope="row"
-                        class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
                       <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
-                           alt="iMac Front Image" class="w-auto h-8 mr-3">
+                           alt="iMac Front Image" class="mr-3 h-8 w-auto">
                       <RouterLink :to="{name:'product-detail', params: {id: product.id}}">
                         {{ product.displayName }}
                       </RouterLink>
                     </th>
                     <td class="px-4 py-2">
                       <span
-                          class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                          class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
                         {{ product.category.name }}
                       </span>
                     </td>
-                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
                       <div class="flex items-center">
                         <div
                             v-if="product.color.hex"
-                            class="inline-block w-4 h-4 mr-2 rounded-full border border-gray-300"
+                            class="mr-2 inline-block h-4 w-4 rounded-full border border-gray-300"
                             :style="{'background-color': '#'+product.color.hex}"
                         >
-                          <span class="ml-5 mb-2">
+                          <span class="mb-2 ml-5">
                             {{ product.color.label }}
                           </span>
                         </div>
                         <span v-else>{{ product.color.label }}</span>
                       </div>
                     </td>
-                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
                       {{ product.size.dimensions_display_name }}
                     </td>
                   </tr>

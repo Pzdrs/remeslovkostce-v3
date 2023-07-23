@@ -37,7 +37,7 @@ onMounted(() => {
 
 <template>
   <div class="mb-5">
-    <h5 class="uppercase text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
+    <h5 class="mb-4 text-sm font-medium uppercase text-gray-500 dark:text-gray-400">
       Kategorie
     </h5>
     <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst kategorie</Alert>
@@ -50,19 +50,19 @@ onMounted(() => {
             :disabled="currentlyFiltering"
             @click="$emit('categoryChange', getFilter(category.id), category)"
             type="button"
-            class="flex items-center justify-between group w-full disabled:hover:text-red-500"
+            class="flex w-full items-center justify-between group disabled:hover:text-red-500"
         >
           <span class="flex items-center">
             <span
                 :aria-disabled="currentlyFiltering"
-                class="text-gray-900 dark:text-white text-base font-medium group-hover:text-blue-700 dark:group-hover:text-blue-600 aria-disabled:text-gray-400 aria-disabled:group-hover:text-gray-400"
+                class="text-base font-medium aria-disabled:text-gray-400 text-gray-900 aria-disabled:group-hover:text-gray-400 group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-600"
             >
               {{ category.name }}
             </span>
           </span>
           <span
               :aria-disabled="currentlyFiltering"
-              class="text-base font-medium text-gray-500 dark:text-gray-400 group-hover:text-blue-700 dark:group-hover:text-blue-600  aria-disabled:text-gray-400 aria-disabled:group-hover:text-gray-400"
+              class="text-base font-medium aria-disabled:text-gray-400 text-gray-500 aria-disabled:group-hover:text-gray-400 group-hover:text-blue-700 dark:text-gray-400 dark:group-hover:text-blue-600"
           >
             ({{ category.products }})
           </span>

@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
   <section v-if="category !== null"
-           class="p-4 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+           class="mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800"
   >
     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
       {{ category.name }}

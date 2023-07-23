@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+  <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
     <a href="#">
       <img class="rounded-t-lg" src="http://127.0.0.1:8000/media/products/blok_1.jpg" alt=""/>
     </a>
