@@ -36,7 +36,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.display_name
 
     def get_thumbnail(self, obj: Product):
-        return obj.thumbnail.image.name if obj.thumbnail else None
+        return obj.thumbnail.image.name if obj.thumbnail else 'products/placeholder.webp'
 
     def get_color(self, obj: Product):
         return {
