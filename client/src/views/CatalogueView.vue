@@ -6,6 +6,7 @@ import {deserializeProduct, fetchProducts, store} from "@/store";
 import {Alert, Spinner} from "flowbite-vue";
 import ProductCard from "@/components/ProductCard.vue";
 import CategoryDescription from "@/components/CategoryDescription.vue";
+import PaginationComponent from "@/components/PaginationComponent.vue";
 
 const PAGINATE_BY = {
   'list': 10,
@@ -275,6 +276,12 @@ onMounted(() => {
                 </div>
               </div>
             </div>
+            <PaginationComponent
+                :current-page="currentPage"
+                :object-count="filteredProducts.length"
+                :per-page="perPage"
+                @page-change="page => currentPage = page"
+            />
           </div>
         </div>
       </div>
