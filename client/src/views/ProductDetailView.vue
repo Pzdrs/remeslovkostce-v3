@@ -2,8 +2,7 @@
 import {Alert, Spinner} from "flowbite-vue";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
-import axios from "@/axios";
-import {deserializeProductDetail} from "@/store";
+import {deserializeProductDetail, fetchProduct} from "@/store";
 
 const route = useRoute();
 let loading = ref(true);
@@ -11,8 +10,7 @@ let fetchFailed = ref(false);
 let product: Product | null = null;
 
 const contentReady = computed(() => !loading.value && !fetchFailed.value);
-
-axios.get(`/products/${route.params.id}`)
+fetchProduct(parseInt(route.params.id.toString()))
     .then(res => {
       product = deserializeProductDetail(res.data);
       console.log(product)
@@ -83,11 +81,12 @@ axios.get(`/products/${route.params.id}`)
       <section>
         <h4 class="text-2xl font-extrabold dark:text-white">
           {{ product.displayName }}
-          <span class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
+          <span
+              class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
             {{ product.category }}
           </span>
         </h4>
-        {{product}}
+        {{ product }}
         {{ product.description }}
       </section>
     </div>

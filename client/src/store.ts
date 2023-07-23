@@ -10,6 +10,14 @@ export function fetchCategories() {
     return axios.get('/categories');
 }
 
+export function fetchProducts() {
+    return axios.get('/products')
+}
+
+export function fetchProduct(id: number) {
+    return axios.get(`/products/${id}`)
+}
+
 export function getProductCategory(id: number): ProductCategory | undefined {
     if(store.categories.length === 0)
     return store.categories.find(category => category.id === id);

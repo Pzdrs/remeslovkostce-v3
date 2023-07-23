@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import axios from "@/axios";
 import {Alert, Spinner} from "flowbite-vue";
 import {computed, onMounted, ref} from "vue";
-import {deserializeProductCategory, getProductCategory, store} from "@/store";
+import {deserializeProductCategory, fetchCategories, getProductCategory, store} from "@/store";
 
 const props = defineProps({
   activeFilters: {
@@ -20,13 +19,13 @@ function getFilter(category: number) {
   return {
     id: props.activeFilters?.length,
     type: 'category',
-    label: getProductCategory(category).name,
+    label: getProductCategory(category),
     callback: (product: Product) => product.category.id === category
   }
 }
 
 onMounted(() => {
-  axios.get('/categories')
+  fetchCategories()
       .then(response => {
         store.categories = response.data.map((category: any) => deserializeProductCategory(category));
         loading.value = false;

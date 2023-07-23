@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 import CategoriesComponent from "@/components/CategoriesComponent.vue";
-import axios from "@/axios";
 
-import {deserializeProduct, store} from "@/store";
+import {deserializeProduct, fetchProducts, store} from "@/store";
 import {Alert, Spinner} from "flowbite-vue";
 import ProductCard from "@/components/ProductCard.vue";
 import CategoryDescription from "@/components/CategoryDescription.vue";
@@ -33,6 +32,8 @@ const paginatedProducts = computed(
     () => filteredProducts.value.slice((currentPage.value - 1) * perPage.value, currentPage.value * perPage.value)
 );
 
+const contentReady = computed(() => !loading.value && !fetchFailed.value);
+
 function removeFilter(filterId?: number) {
   if (filterId === undefined) {
     activeFilters.value = [];
@@ -54,7 +55,7 @@ function handleCategoryChange(filter: Filter, category: ProductCategory) {
 }
 
 onMounted(() => {
-  axios.get('/products')
+  fetchProducts()
       .then(response => {
         store.products = response.data.map((product: any) => deserializeProduct(product))
         loading.value = false;
@@ -215,62 +216,63 @@ onMounted(() => {
           <CategoryDescription :category="currentCategory"/>
           <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst produkty</Alert>
           <Spinner v-if="loading && !fetchFailed" class="m-auto"/>
-          <div v-if="viewType === 'grid'" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
-            <div v-for="product in paginatedProducts" :key="product.id">
-              <ProductCard :product="product"/>
+          <div v-if="contentReady">
+            <div v-if="viewType === 'grid'" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+              <div v-for="product in paginatedProducts" :key="product.id">
+                <ProductCard :product="product"/>
+              </div>
             </div>
-          </div>
-
-          <div v-else-if="viewType === 'list'" class="mx-auto">
-            <div class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                  <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" class="px-4 py-3">Produkt</th>
-                    <th scope="col" class="px-4 py-3">Kategorie</th>
-                    <th scope="col" class="px-4 py-3">Barva</th>
-                    <th scope="col" class="px-4 py-3">Rozměry</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr
-                      v-for="product in paginatedProducts" :key="product.id"
-                      class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
-                    <th scope="row"
-                        class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
-                      <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
-                           alt="iMac Front Image" class="mr-3 h-8 w-auto">
-                      <RouterLink :to="{name:'product-detail', params: {id: product.id}}">
-                        {{ product.displayName }}
-                      </RouterLink>
-                    </th>
-                    <td class="px-4 py-2">
+            <div v-else-if="viewType === 'list'" class="mx-auto">
+              <div class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                    <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" class="px-4 py-3">Produkt</th>
+                      <th scope="col" class="px-4 py-3">Kategorie</th>
+                      <th scope="col" class="px-4 py-3">Barva</th>
+                      <th scope="col" class="px-4 py-3">Rozměry</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                        v-for="product in paginatedProducts" :key="product.id"
+                        class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
+                      <th scope="row"
+                          class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                        <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
+                             alt="iMac Front Image" class="mr-3 h-8 w-auto">
+                        <RouterLink :to="{name:'product-detail', params: {id: product.id}}">
+                          {{ product.displayName }}
+                        </RouterLink>
+                      </th>
+                      <td class="px-4 py-2">
                       <span
                           class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
-                        {{ product.category.name }}
+                        {{ product.category }}
                       </span>
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
-                      <div class="flex items-center">
-                        <div
-                            v-if="product.color.hex"
-                            class="mr-2 inline-block h-4 w-4 rounded-full border border-gray-300"
-                            :style="{'background-color': '#'+product.color.hex}"
-                        >
+                      </td>
+                      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                        <div class="flex items-center">
+                          <div
+                              v-if="product.color.hex"
+                              class="mr-2 inline-block h-4 w-4 rounded-full border border-gray-300"
+                              :style="{'background-color': '#'+product.color.hex}"
+                          >
                           <span class="mb-2 ml-5">
                             {{ product.color.label }}
                           </span>
+                          </div>
+                          <span v-else>{{ product.color.label }}</span>
                         </div>
-                        <span v-else>{{ product.color.label }}</span>
-                      </div>
-                    </td>
-                    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
-                      {{ product.size.dimensions_display_name }}
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+                      </td>
+                      <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                        {{ product.size.dimensions_display_name }}
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
