@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <RouterLink :to="{name:'product-detail', params: {id: product.id}}">
+  <RouterLink :to="{name:'product-detail', params: {id: product.id}}" :key="product.id">
     {{ product.displayName }}
   </RouterLink>
 </template>

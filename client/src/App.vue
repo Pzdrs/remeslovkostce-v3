@@ -8,7 +8,7 @@ import NavbarComponent from "@/components/NavbarComponent.vue";
   <NavbarComponent/>
   <div class="flex min-h-screen flex-col">
     <main class="flex-grow">
-      <RouterView v-slot="{Component}">
+      <RouterView v-slot="{Component}" :key="$route.fullPath">
         <Component :is="Component"/>
       </RouterView>
     </main>

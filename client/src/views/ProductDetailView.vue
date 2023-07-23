@@ -1,25 +1,35 @@
 <script setup lang="ts">
 import {Alert} from "flowbite-vue";
-import {computed, ref} from "vue";
-import {useRoute} from "vue-router";
+import {computed, onMounted, ref} from "vue";
+import {onBeforeRouteUpdate, useRoute} from "vue-router";
 import {deserializeProductDetail, fetchProduct} from "@/store";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
+import ProductParameterTable from "@/components/ProductParameterTable.vue";
+import ProductLink from "@/components/product/ProductLink.vue";
 
 const route = useRoute();
 let loading = ref(true);
 let fetchFailed = ref(false);
 let product: Product = null!;
+const variants = ref<Product[]>([]);
 
 const contentReady = computed(() => !loading.value && !fetchFailed.value);
-fetchProduct(parseInt(route.params.id.toString()))
-    .then(res => {
-      product = deserializeProductDetail(res.data);
-      loading.value = false;
-    })
-    .catch(() => {
-      fetchFailed.value = true;
-    });
 
+onMounted(() => {
+  fetchProduct(parseInt(route.params.id.toString()))
+      .then(res => {
+        product = deserializeProductDetail(res.data);
+        product.variants?.products.forEach(product => {
+          fetchProduct(product).then(res => {
+            variants.value.push(deserializeProductDetail(res.data))
+          });
+        })
+        loading.value = false;
+      })
+      .catch(() => {
+        fetchFailed.value = true;
+      });
+});
 </script>
 
 <template v-if="product !== null">
@@ -48,7 +58,15 @@ fetchProduct(parseInt(route.params.id.toString()))
       <span class="sr-only">Loading...</span>
     </div>
 
-    <div v-if="contentReady" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div v-if="contentReady" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="md:hidden">
+        <h4 class="mb-1 text-2xl font-extrabold dark:text-white md:mb-0">
+          {{ product.displayName }}
+        </h4>
+        <ProductCategoryTag :category="product.category"/>
+        <p v-if="product.description">{{ product.description }}</p>
+        <p v-else class="mt-2 mb-3 font-normal text-gray-400 dark:text-gray-400">bez popisku</p>
+      </div>
       <div class="grid gap-4">
         <div>
           <img class="h-auto max-w-full rounded-lg"
@@ -78,14 +96,34 @@ fetchProduct(parseInt(route.params.id.toString()))
           </div>
         </div>
       </div>
-      <section class="order-first md:order-last">
-        <h4 class="text-2xl mb-1 md:mb-0 font-extrabold dark:text-white">
+      <section>
+        <h4 class="mb-1 hidden text-2xl font-extrabold dark:text-white md:mb-0 md:block">
           {{ product.displayName }}
-          <ProductCategoryTag :category="product.category" class="hidden md:inline"/>
+          <ProductCategoryTag :category="product.category"/>
         </h4>
-        <ProductCategoryTag :category="product.category" class="inline md:hidden"/>
-        <p v-if="product.description">{{ product.description }}</p>
-        <p v-else class="mb-3 mt-2 font-normal text-gray-400 dark:text-gray-400"> bez popisku </p>
+        <div class="hidden md:block">
+          <p v-if="product.description">{{ product.description }}</p>
+          <p v-else class="mt-2 mb-3 font-normal text-gray-400 dark:text-gray-400">bez popisku</p>
+        </div>
+        <h5 class="mt-5 text-xl font-medium">Parametry</h5>
+        <ProductParameterTable :product="product"/>
+
+        <section v-if="product.variants">
+          <h5 class="mt-5 text-xl font-medium">
+            Další varianty z kategorie <span class="font-extrabold">{{ product.variants.name }}</span>
+          </h5>
+
+          <div class="mt-2 md:w-3/4">
+            <div v-for="variant in variants" :key="variant.id"
+                 class="mb-4 rounded-lg border border-gray-200 p-3 dark:border-gray-700 dark:bg-gray-800 flex"
+            >
+              <img class="rounded-lg h-12 w-auto"
+                   src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
+              <ProductLink :product="variant" class="ml-7 my-auto font-medium"/>
+            </div>
+          </div>
+
+        </section>
       </section>
     </div>
   </div>
