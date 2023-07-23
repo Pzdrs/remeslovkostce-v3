@@ -58,9 +58,7 @@ function handleCategoryChange(filter: Filter, category: ProductCategory) {
 
 onMounted(() => {
   fetchProducts()
-      .then(response => {
-        loading.value = false;
-      })
+      .then(() => loading.value = false)
       .catch(() => fetchFailed.value = true)
 });
 </script>
@@ -92,7 +90,7 @@ onMounted(() => {
           </div>
           <div class="flex items-center justify-center text-sm text-gray-600 dark:text-gray-400">
             <div class="w-fit" data-testid="flowbite-tooltip-target">
-              <button type="button" @click="viewType = 'list'"
+              <button type="button" @click="viewType = 'list';currentPage = 1"
                       class="mr-1 inline-flex items-center rounded-lg p-2 text-center text-sm font-medium text-white hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                 <svg aria-hidden="true" class="h-5 w-5 text-gray-500 dark:text-gray-400" viewBox="0 0 18 10" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
@@ -126,7 +124,7 @@ onMounted(() => {
               </div>
             </div>
             <div class="w-fit" data-testid="flowbite-tooltip-target">
-              <button type="button" @click="viewType='grid'"
+              <button type="button" @click="viewType = 'grid'; currentPage = 1"
                       class="inline-flex items-center rounded-lg text-center text-sm font-medium text-white p-2.5 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                 <svg aria-hidden="true" class="h-4 w-4 text-gray-500 dark:text-gray-400" viewBox="0 0 16 16" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
