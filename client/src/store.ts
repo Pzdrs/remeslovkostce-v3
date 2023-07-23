@@ -7,14 +7,17 @@ export const store = reactive({
 });
 
 export function fetchCategories() {
-    return axios.get('/categories');
+    return axios.get('/categories')
+        .then(response => store.categories = response.data.map((category: any) => deserializeProductCategory(category)));
 }
 
 export function fetchProducts() {
     return axios.get('/products')
+        .then(response => store.products = response.data.map((product: any) => deserializeProduct(product)));
 }
 
-export function fetchProduct(id: number) {
+export async function fetchProduct(id: number) {
+    if (store.categories.length === 0) await fetchCategories();
     return axios.get(`/products/${id}`)
 }
 

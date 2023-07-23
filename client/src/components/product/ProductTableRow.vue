@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ProductLink from "@/components/product/ProductLink.vue";
+
 defineProps({
   products: {
     type: Array as () => Array<Product>,
@@ -14,9 +16,7 @@ defineProps({
         class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
       <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
            alt="iMac Front Image" class="mr-3 h-8 w-auto">
-      <RouterLink :to="{name:'product-detail', params: {id: product.id}}">
-        {{ product.displayName }}
-      </RouterLink>
+      <ProductLink :product="product"/>
     </th>
     <td class="px-4 py-2">
       <span

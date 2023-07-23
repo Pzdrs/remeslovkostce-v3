@@ -59,7 +59,6 @@ function handleCategoryChange(filter: Filter, category: ProductCategory) {
 onMounted(() => {
   fetchProducts()
       .then(response => {
-        store.products = response.data.map((product: any) => deserializeProduct(product))
         loading.value = false;
       })
       .catch(() => fetchFailed.value = true)

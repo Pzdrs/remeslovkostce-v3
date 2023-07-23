@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Alert, Spinner} from "flowbite-vue";
+import {Alert} from "flowbite-vue";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
 import {deserializeProductDetail, fetchProduct} from "@/store";
@@ -7,13 +7,12 @@ import {deserializeProductDetail, fetchProduct} from "@/store";
 const route = useRoute();
 let loading = ref(true);
 let fetchFailed = ref(false);
-let product: Product | null = null;
+let product: Product = null!;
 
 const contentReady = computed(() => !loading.value && !fetchFailed.value);
 fetchProduct(parseInt(route.params.id.toString()))
     .then(res => {
       product = deserializeProductDetail(res.data);
-      console.log(product)
       loading.value = false;
     })
     .catch(() => {
@@ -48,7 +47,7 @@ fetchProduct(parseInt(route.params.id.toString()))
       <span class="sr-only">Loading...</span>
     </div>
 
-    <div v-if="contentReady" class="grid grid-cols-2 gap-4">
+    <div v-if="contentReady" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="grid gap-4">
         <div>
           <img class="h-auto max-w-full rounded-lg"
@@ -83,11 +82,11 @@ fetchProduct(parseInt(route.params.id.toString()))
           {{ product.displayName }}
           <span
               class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
-            {{ product.category }}
+            {{ product.category.name }}
           </span>
         </h4>
-        {{ product }}
-        {{ product.description }}
+        <p v-if="product.description">{{ product.description }}</p>
+        <p v-else class="mb-3 font-normal text-gray-400 dark:text-gray-400"> bez popisku </p>
       </section>
     </div>
   </div>

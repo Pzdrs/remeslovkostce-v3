@@ -27,7 +27,6 @@ function getFilter(category: number) {
 onMounted(() => {
   fetchCategories()
       .then(response => {
-        store.categories = response.data.map((category: any) => deserializeProductCategory(category));
         loading.value = false;
       })
       .catch(() => fetchFailed.value = true);

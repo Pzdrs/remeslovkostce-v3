@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
+import ProductLink from "@/components/product/ProductLink.vue";
 
-const props = defineProps({
+defineProps({
   product: {
     type: Object as PropType<Product>,
     required: true
@@ -15,12 +16,8 @@ const props = defineProps({
       <img class="rounded-t-lg" src="http://127.0.0.1:8000/media/products/blok_1.jpg" alt=""/>
     </a>
     <div class="p-5">
-      <a href="#">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {{ product.displayName }}
-        </h5>
-      </a>
-      <p v-if="product.description.length > 0"
+      <ProductLink :product="product" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"/>
+      <p v-if=" product.description.length> 0"
          class="mb-3 font-normal text-gray-700 dark:text-gray-400">
         {{ product.description }}
       </p>
