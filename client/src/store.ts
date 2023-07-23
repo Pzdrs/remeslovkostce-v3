@@ -19,7 +19,6 @@ export function fetchProduct(id: number) {
 }
 
 export function getProductCategory(id: number): ProductCategory | undefined {
-    if(store.categories.length === 0)
     return store.categories.find(category => category.id === id);
 }
 
