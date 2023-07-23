@@ -12,9 +12,10 @@ defineProps({
 
 <template>
   <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
-    <a href="#">
-      <img class="rounded-t-lg" src="http://127.0.0.1:8000/media/products/blok_1.jpg" alt=""/>
-    </a>
+    <img class="rounded-t-lg"
+         :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+         alt="Product thumbnail"
+    />
     <div class="p-5">
       <ProductLink :product="product" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"/>
       <p v-if=" product.description.length> 0"

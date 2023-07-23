@@ -14,9 +14,9 @@ defineProps({
   <tr v-for="product in products" :key="product.id"
       class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
     <th scope="row"
-        class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
-      <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
-           alt="iMac Front Image" class="mr-3 h-8 w-auto">
+        class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white h-14">
+      <img :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+           alt="iMac Front Image" class="mr-3 w-8 rounded">
       <ProductLink :product="product"/>
     </th>
     <td class="px-4 py-2">

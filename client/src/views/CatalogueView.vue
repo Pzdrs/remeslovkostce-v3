@@ -2,7 +2,7 @@
 import {computed, onMounted, ref} from "vue";
 import CategoriesComponent from "@/components/CategoriesComponent.vue";
 
-import {deserializeProduct, fetchProducts, store} from "@/store";
+import {fetchProducts, store} from "@/store";
 import {Alert, Spinner} from "flowbite-vue";
 import CategoryDescription from "@/components/CategoryDescription.vue";
 import PaginationComponent from "@/components/PaginationComponent.vue";
@@ -16,7 +16,7 @@ const PAGINATE_BY = {
 
 let loading = ref(true);
 let fetchFailed = ref(false);
-let viewType = ref('list');
+let viewType = ref('grid');
 
 const currentPage = ref(1);
 const perPage = computed(() => PAGINATE_BY[viewType.value]);
