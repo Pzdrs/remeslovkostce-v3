@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ProductLink from "@/components/product/ProductLink.vue";
+import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
 
 defineProps({
   products: {
@@ -19,10 +20,7 @@ defineProps({
       <ProductLink :product="product"/>
     </th>
     <td class="px-4 py-2">
-      <span
-          class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
-        {{ product.category.name }}
-      </span>
+      <ProductCategoryTag :category="product.category"/>
     </td>
     <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
       <div class="flex items-center">

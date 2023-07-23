@@ -3,6 +3,7 @@ import {Alert} from "flowbite-vue";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
 import {deserializeProductDetail, fetchProduct} from "@/store";
+import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
 
 const route = useRoute();
 let loading = ref(true);
@@ -77,16 +78,14 @@ fetchProduct(parseInt(route.params.id.toString()))
           </div>
         </div>
       </div>
-      <section>
-        <h4 class="text-2xl font-extrabold dark:text-white">
+      <section class="order-first md:order-last">
+        <h4 class="text-2xl mb-1 md:mb-0 font-extrabold dark:text-white">
           {{ product.displayName }}
-          <span
-              class="mr-2 rounded bg-blue-100 text-sm font-medium text-blue-800 px-2.5 py-0.5 dark:bg-blue-900 dark:text-blue-300">
-            {{ product.category.name }}
-          </span>
+          <ProductCategoryTag :category="product.category" class="hidden md:inline"/>
         </h4>
+        <ProductCategoryTag :category="product.category" class="inline md:hidden"/>
         <p v-if="product.description">{{ product.description }}</p>
-        <p v-else class="mb-3 font-normal text-gray-400 dark:text-gray-400"> bez popisku </p>
+        <p v-else class="mb-3 mt-2 font-normal text-gray-400 dark:text-gray-400"> bez popisku </p>
       </section>
     </div>
   </div>
