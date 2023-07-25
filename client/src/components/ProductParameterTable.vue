@@ -27,7 +27,7 @@ function getRowClassList(index: number) {
 </script>
 
 <template>
-  <div class="relative overflow-x-auto xl:w-3/4">
+  <div class="relative overflow-x-auto lg:w-3/4">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <tbody>
       <tr v-for="(parameter, index) in parameters"
