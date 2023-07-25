@@ -59,6 +59,7 @@ onMounted(() => {
     </div>
 
     <div v-if="contentReady" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <!--   Heading for mobile devices   -->
       <div class="md:hidden">
         <h4 class="mb-1 text-2xl font-extrabold dark:text-white md:mb-0">
           {{ product.displayName }}
@@ -67,33 +68,23 @@ onMounted(() => {
         <p v-if="product.description">{{ product.description }}</p>
         <p v-else class="mt-2 mb-3 font-normal text-gray-400 dark:text-gray-400">bez popisku</p>
       </div>
+      <!--   Gallery   -->
       <div class="grid gap-4">
         <div>
           <img class="h-auto max-w-full rounded-lg"
-               src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg"
-               alt="">
+               :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+               alt="Product thumbnail">
         </div>
+        <hr>
         <div class="grid grid-cols-5 gap-4">
-          <div>
+          <a target="_blank" class="border-2 rounded p-2"
+             :href="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+             v-for="image in product.images" :key="image.id"
+          >
             <img class="h-auto max-w-full rounded-lg"
-                 src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="">
-          </div>
-          <div>
-            <img class="h-auto max-w-full rounded-lg"
-                 src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
-          </div>
-          <div>
-            <img class="h-auto max-w-full rounded-lg"
-                 src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
-          </div>
-          <div>
-            <img class="h-auto max-w-full rounded-lg"
-                 src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
-          </div>
-          <div>
-            <img class="h-auto max-w-full rounded-lg"
-                 src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
-          </div>
+                 :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+                 alt="Alternate product image">
+          </a>
         </div>
       </div>
       <section>
