@@ -1,5 +1,0 @@
-media/
-venv/
-.gitignore
-Dockerfile
-.env
