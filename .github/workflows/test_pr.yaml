@@ -2,8 +2,7 @@ name: Test and build Pull Requests
 on:
   workflow_dispatch: # Allows to run the workflow manually from the Actions tab
   pull_request:
-    branches:
-      - develop
+    branches: [ main, develop ]
 jobs:
   test-client:
     runs-on: ubuntu-latest
