@@ -84,7 +84,7 @@ const routes = router.getRoutes().filter(route => route.meta.navbar === true);
       <div class="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto" id="navbar-language">
         <ul class="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:space-x-8 md:mt-0 md:flex-row md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
           <li v-for="route in routes" :key="route.name">
-            <NavbarLink :to="route.path" :label="route.meta.title.toString()"/>
+            <NavbarLink :to="route.path" :label="route.meta.title as string"/>
           </li>
         </ul>
       </div>
