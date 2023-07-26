@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import {computed} from "vue";
+import {useMediaQuery} from "@vueuse/core";
+
+const isMobile = useMediaQuery('(max-width: 640px)')
+const isDesktop = useMediaQuery('(min-width: 1024px)')
 
 const props = defineProps({
   currentPage: {
@@ -29,28 +33,28 @@ const isAtFirstPage = computed(() => props.currentPage === 1)
 const isAtLastPage = computed(() => props.currentPage === pageCount.value)
 
 const visiblePageRange = computed(() => {
-  const range = 1;
+  const maxPages = isMobile.value ? 3 : isDesktop.value ? 7 : 3;
+  const range = Math.floor(maxPages / 2);
   let start = props.currentPage - range;
   let end = props.currentPage + range;
 
   start = Math.max(1, start);
   end = Math.min(pageCount.value, end);
 
-  if (pageCount.value <= 3) {
-    start = 1;
-    end = pageCount.value;
-  } else {
-    if (end - start < 2) {
-      if (start === 1) {
-        end = Math.min(3, pageCount.value);
-      } else if (end === pageCount.value) {
-        start = Math.max(pageCount.value - 2, 1);
-      }
-    }
+  const diffStart = maxPages - (end - start + 1);
+  if (diffStart > 0) {
+    start = Math.max(start - diffStart, 1);
   }
 
-  return Array.from({length: end - start + 1}, (_, i) => start + i);
+  const diffEnd = maxPages - (end - start + 1);
+  if (diffEnd > 0) {
+    end = Math.min(end + diffEnd, pageCount.value);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
+
+
 
 </script>
 
