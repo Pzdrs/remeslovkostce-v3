@@ -5,6 +5,12 @@ interface ProductCategory {
     products: number;
 }
 
+interface ProductImage {
+    id: number,
+    thumbnail: boolean,
+    image: string;
+}
+
 interface ProductSize {
     sheetCount: number | null,
     width: number,
@@ -33,7 +39,7 @@ interface Product {
     size: ProductSize,
     color: ProductColor,
     thumbnail: string | null,
-    images: string[],
+    images: ProductImage[],
     variants: VariantGroup | null
 }
 
