@@ -16,10 +16,10 @@ const PAGINATE_BY = {
 
 let loading = ref(true);
 let fetchFailed = ref(false);
-let viewType = ref('grid');
+let viewType = ref<string>('grid');
 
 const currentPage = ref(1);
-const perPage = computed(() => PAGINATE_BY[viewType.value]);
+const perPage = computed(() => PAGINATE_BY[viewType.value as 'list' | 'grid']);
 const activeFilters = ref<Filter[]>([]);
 const currentCategory = ref<ProductCategory | null>(null);
 

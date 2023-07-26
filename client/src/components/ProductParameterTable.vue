@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
-import {computed} from "vue";
 
 const props = defineProps({
   product: {
@@ -18,7 +17,7 @@ function getRowClassList(index: number) {
   const classes = ["bg-white", "dark:bg-gray-800"];
 
   // If it's the last parameter row, add additional classes
-  if (index < Object.keys(this.parameters).length - 1) {
+  if (index < Object.keys(parameters).length - 1) {
     classes.push("border-b", "dark:border-gray-700");
   }
 

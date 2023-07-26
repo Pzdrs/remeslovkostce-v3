@@ -19,7 +19,7 @@ function getFilter(category: number) {
   return {
     id: props.activeFilters?.length,
     type: 'category',
-    label: getProductCategory(category).name,
+    label: getProductCategory(category)?.name,
     callback: (product: Product) => product.category.id === category
   }
 }
