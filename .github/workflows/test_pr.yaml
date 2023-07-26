@@ -37,7 +37,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Linting
-        run: pylint --load-plugins=pylint_django api backend remeslovkostce
+        run: pylint --load-plugins=pylint_django --django-settings-module=backend.settings api backend remeslovkostce
       - name: Run tests and Coverage report
         run: |
           coverage run manage.py test
