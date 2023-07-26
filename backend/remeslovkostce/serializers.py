@@ -1,6 +1,7 @@
+# pylint: disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
 from rest_framework import serializers
 
-from remeslovkostce.models import Product, ProductCategory, ProductImage, ProductSize, ProductColor
+from remeslovkostce.models import Product, ProductCategory, ProductImage, ProductSize
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -49,7 +50,9 @@ class ProductDetailSerializer(ProductSerializer):
     class Meta:
         model = Product
         fields = (
-            'id', 'category', 'display_name', 'description', 'tags', 'size', 'color', 'thumbnail', 'images',
+            'id', 'category', 'display_name',
+            'description', 'tags', 'size',
+            'color', 'thumbnail', 'images',
             'variants'
         )
 
