@@ -27,6 +27,31 @@ const props = defineProps({
 const pageCount = computed(() => Math.ceil(props.objectCount / props.perPage))
 const isAtFirstPage = computed(() => props.currentPage === 1)
 const isAtLastPage = computed(() => props.currentPage === pageCount.value)
+
+const visiblePageRange = computed(() => {
+  const range = 1;
+  let start = props.currentPage - range;
+  let end = props.currentPage + range;
+
+  start = Math.max(1, start);
+  end = Math.min(pageCount.value, end);
+
+  if (pageCount.value <= 3) {
+    start = 1;
+    end = pageCount.value;
+  } else {
+    if (end - start < 2) {
+      if (start === 1) {
+        end = Math.min(3, pageCount.value);
+      } else if (end === pageCount.value) {
+        start = Math.max(pageCount.value - 2, 1);
+      }
+    }
+  }
+
+  return Array.from({length: end - start + 1}, (_, i) => start + i);
+});
+
 </script>
 
 <template>
@@ -45,7 +70,8 @@ const isAtLastPage = computed(() => props.currentPage === pageCount.value)
             {{ previousLabel }}
           </button>
         </li>
-        <li v-for="i in pageCount" :key="i">
+
+        <li v-for="i in visiblePageRange" :key="i">
           <a href="#" v-if="i === currentPage" @click.prevent="$emit('pageChange', i)"
              class="z-10 flex h-10 items-center justify-center border border-blue-300 bg-blue-50 px-4 leading-tight text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
             {{ i }}
@@ -56,6 +82,7 @@ const isAtLastPage = computed(() => props.currentPage === pageCount.value)
             {{ i }}
           </a>
         </li>
+
         <li>
           <button :disabled="isAtLastPage" @click="$emit('pageChange', currentPage + 1)"
                   class="flex h-10 items-center justify-center rounded-r-lg border border-gray-300 bg-white px-4 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
