@@ -12,11 +12,7 @@ defineProps({
 
 <template>
   <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 h-[390px] relative">
-<<<<<<< HEAD
-    <img class="rounded-t-lg min-h-[250px] w-full object-contain"
-=======
     <img class="rounded-t-lg min-h-[200px] w-full object-contain"
->>>>>>> 7ca341ac78ba3be9f403f1308db24f74f673d6e1
          :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
          alt="Product thumbnail"
     />
