@@ -14,9 +14,9 @@ defineProps({
     <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
     <tr>
       <th scope="col" class="px-4 py-3">Produkt</th>
-      <th scope="col" class="px-4 py-3">Kategorie</th>
-      <th scope="col" class="px-4 py-3">Barva</th>
-      <th scope="col" class="px-4 py-3">Rozměry</th>
+      <th scope="col" class="px-4 py-3 hidden sm:table-cell">Kategorie</th>
+      <th scope="col" class="px-4 py-3 hidden md:table-cell">Barva</th>
+      <th scope="col" class="px-4 py-3 hidden md:table-cell">Rozměry</th>
     </tr>
     </thead>
     <tbody>

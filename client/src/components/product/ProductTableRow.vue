@@ -19,10 +19,10 @@ defineProps({
            alt="iMac Front Image" class="mr-3 w-8 rounded">
       <ProductLink :product="product"/>
     </th>
-    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white hidden sm:table-cell">
       <ProductCategoryTag :category="product.category"/>
     </td>
-    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white hidden md:table-cell">
       <div class="flex items-center">
         <div v-if="product.color.hex"
              class="mr-2 inline-block h-4 w-4 rounded-full border border-gray-300"
@@ -35,7 +35,7 @@ defineProps({
         <span v-else>{{ product.color.label }}</span>
       </div>
     </td>
-    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white hidden md:table-cell">
       {{ product.size.dimensions_display_name }}
     </td>
   </tr>
