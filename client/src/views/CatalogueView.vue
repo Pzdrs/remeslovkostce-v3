@@ -64,9 +64,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="mt-6 bg-white pb-8 dark:bg-gray-900 lg:pb-24">
+  <section class="mt-6 bg-white pb-8 dark:bg-gray-900 lg:pb-24 w-full">
     <div class="mx-auto px-4 max-w-8xl">
       <div class="mb-6 w-full">
+
         <div
             class="flex flex-col items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 lg:flex-row">
           <div class="w-full flex-shrink-0 lg:flex lg:w-auto">
@@ -115,14 +116,6 @@ onMounted(() => {
                 </svg>
                 <span class="sr-only">Toggle list view</span></button>
             </div>
-            <div data-testid="flowbite-tooltip" tabindex="-1"
-                 class="invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
-                 id=":r0:" role="tooltip" style="position: absolute; top: 267px; left: 1290.16px;">
-              <div class="relative z-20">Toggle list view</div>
-              <div class="absolute z-10 h-2 w-2 rotate-45 bg-gray-900 dark:bg-gray-700"
-                   data-testid="flowbite-tooltip-arrow" style="bottom: -4px; left: 60px;">&nbsp;
-              </div>
-            </div>
             <div class="w-fit" data-testid="flowbite-tooltip-target">
               <button type="button" @click="viewType = 'grid'; currentPage = 1"
                       class="inline-flex items-center rounded-lg text-center text-sm font-medium text-white p-2.5 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
@@ -143,16 +136,10 @@ onMounted(() => {
                 </svg>
                 <span class="sr-only">Toggle grid view</span></button>
             </div>
-            <div data-testid="flowbite-tooltip" tabindex="-1"
-                 class="invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
-                 id=":r2:" role="tooltip" style="position: absolute; top: 267px; left: 1303.72px;">
-              <div class="relative z-20">Toggle grid view</div>
-              <div class="absolute z-10 h-2 w-2 rotate-45 bg-gray-900 dark:bg-gray-700"
-                   data-testid="flowbite-tooltip-arrow" style="bottom: -4px; left: 84.1405px;">&nbsp;
-              </div>
-            </div>
+
           </div>
         </div>
+
       </div>
       <div class="mt-4 grid grid-cols-5 gap-6">
         <div>

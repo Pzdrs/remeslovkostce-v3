@@ -19,7 +19,7 @@ defineProps({
            alt="iMac Front Image" class="mr-3 w-8 rounded">
       <ProductLink :product="product"/>
     </th>
-    <td class="px-4 py-2">
+    <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
       <ProductCategoryTag :category="product.category"/>
     </td>
     <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
