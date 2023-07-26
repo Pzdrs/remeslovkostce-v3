@@ -203,7 +203,7 @@ onMounted(() => {
           <Alert v-if="fetchFailed" type="danger" :icon="false">Nepodařilo se načíst produkty</Alert>
           <Spinner v-if="loading && !fetchFailed" class="m-auto"/>
           <div v-if="contentReady">
-            <div v-if="viewType === 'grid'" class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+            <div v-if="viewType === 'grid'" class="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 justify-items-center sm:justify-items-stretch">
               <div v-for="product in paginatedProducts" :key="product.id">
                 <ProductCard :product="product"/>
               </div>
