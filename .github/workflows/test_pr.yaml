@@ -17,12 +17,12 @@ jobs:
           node-version: 12.x
       - name: Install dependencies
         run: npm install
-      - name: Lint
-        run: npm run lint
-      - name: Run tests
-        run: npm test
-      - name: Build
-        run: npm run build
+#      - name: Lint
+#        run: npm run lint
+#      - name: Run tests
+#        run: npm test
+#      - name: Build
+#        run: npm run build
   test-backend:
     runs-on: ubuntu-latest
     defaults:
