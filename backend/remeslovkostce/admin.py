@@ -1,7 +1,16 @@
+# pylint: disable=missing-class-docstring, missing-function-docstring
 from django.contrib import admin
 
-from remeslovkostce.models import ProductCategory, Product, ProductColor, ProductSizeLabel, ProductSize, Tag, \
-    SizeDisplayConfiguration, ProductImage, VariantGroup
+from remeslovkostce.models import \
+    ProductCategory, \
+    Product, \
+    ProductColor, \
+    ProductSizeLabel, \
+    ProductSize, \
+    Tag, \
+    SizeDisplayConfiguration, \
+    ProductImage, \
+    VariantGroup
 
 
 # Register your models here.
