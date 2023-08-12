@@ -2,16 +2,14 @@ version: '3.7'
 services:
   backend:
     image: pycrs/remeslovkostce-backend:latest
-    ports:
-      - "8000:8000"
     volumes:
       - /home/administrator/docker/remeslovkostce/data/media:/app/media
       - /home/administrator/docker/remeslovkostce/data/db.sqlite3:/app/db.sqlite3
       - static:/app/static
     environment:
       - DJANGO_SECRET_KEY=<YOUR_DJANGO_SECRET_KEY>
-      - CSRF_TRUSTED_ORIGINS="http://*.localhost,https://remeslovkostce.cz"
-      - CORS_ORIGIN_WHITELIST="http://localhost:*,https://remeslovkostce.cz"
+      - CSRF_TRUSTED_ORIGINS="https://remeslovkostce.cz"
+      - CORS_ORIGIN_WHITELIST="https://remeslovkostce.cz"
   client:
     image: pycrs/remeslovkostce-client
     depends_on:
