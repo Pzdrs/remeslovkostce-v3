@@ -7,12 +7,12 @@ services:
     volumes:
       - media:/app/media
       - static:/app/static
-    env_file:
-      - backend/.env.prod
-#  client:
-#    build: client
-#    depends_on:
-#      - backend
+    environment:
+      - DJANGO_SECRET_KEY=<YOUR_DJANGO_SECRET_KEY>
+  client:
+    build: client
+    depends_on:
+      - backend
   nginx:
     build: nginx
     volumes:

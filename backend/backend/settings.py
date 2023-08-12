@@ -29,7 +29,8 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split(' ')
 CSRF_TRUSTED_ORIGINS = ['http://*.localhost']
 CORS_ALLOW_HEADERS = "*"
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173',
+    'http://localhost:*',
+    'https://remeslovkostce.cz'
 ]
 
 # Application definition
