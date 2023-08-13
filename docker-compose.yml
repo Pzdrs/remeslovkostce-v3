@@ -16,15 +16,20 @@ services:
       - backend
   nginx:
     image: pycrs/remeslovkostce-proxy
+    networks:
+      default:
+      proxy_net:
     volumes:
       - /home/administrator/docker/remeslovkostce/data/media:/app/media
       - static:/static
     environment:
-      - DOMAIN=localhost
+      - DOMAIN=remeslovkostce.cz
       - DJANGO_PORT=8000
       - FRONTEND_PORT=80
-    ports:
-      - "8100:80"
 
 volumes:
   static:
+
+networks:
+  proxy_net:
+    external: true
