@@ -8,8 +8,8 @@ services:
       - static:/app/static
     environment:
       - DJANGO_SECRET_KEY=<YOUR_DJANGO_SECRET_KEY>
-      - CSRF_TRUSTED_ORIGINS="https://remeslovkostce.cz"
-      - CORS_ORIGIN_WHITELIST="https://remeslovkostce.cz"
+      - CSRF_TRUSTED_ORIGINS=https://remeslovkostce.cz
+      - CORS_ORIGIN_WHITELIST=https://remeslovkostce.cz
   client:
     image: pycrs/remeslovkostce-client
     depends_on:
@@ -19,9 +19,12 @@ services:
     volumes:
       - /home/administrator/docker/remeslovkostce/data/media:/app/media
       - static:/static
+    environment:
+      - DOMAIN=localhost
+      - DJANGO_PORT=8000
+      - FRONTEND_PORT=80
     ports:
-      - "80:80"
-      - "443:443"
+      - "8100:80"
 
 volumes:
   static:
