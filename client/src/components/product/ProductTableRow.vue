@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductLink from "@/components/product/ProductLink.vue";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
+import {getMediaURL} from "@/axios";
 
 defineProps({
   products: {
@@ -15,7 +16,7 @@ defineProps({
       class="border-b hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700">
     <th scope="row"
         class="flex items-center whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white h-14">
-      <img :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+      <img :src="getMediaURL(product.thumbnail)"
            alt="iMac Front Image" class="mr-3 w-8 rounded">
       <ProductLink :product="product"/>
     </th>

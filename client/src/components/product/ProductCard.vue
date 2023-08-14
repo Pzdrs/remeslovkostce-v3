@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
 import ProductLink from "@/components/product/ProductLink.vue";
+import {getMediaURL} from "@/axios";
 
 defineProps({
   product: {
@@ -8,12 +9,13 @@ defineProps({
     required: true
   }
 });
+
 </script>
 
 <template>
   <div class="max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 h-[390px] relative flex flex-col justify-between">
     <img class="min-h-[250px] w-full object-contain"
-         :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+         :src="getMediaURL(product.thumbnail)"
          alt="Product thumbnail"
     />
     <div class="p-5">
