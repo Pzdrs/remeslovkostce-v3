@@ -6,12 +6,14 @@ import {deserializeProductDetail, fetchProduct} from "@/store";
 import ProductCategoryTag from "@/components/ProductCategoryTag.vue";
 import ProductParameterTable from "@/components/ProductParameterTable.vue";
 import ProductLink from "@/components/product/ProductLink.vue";
+import {getMediaURL} from "@/axios";
 
 const route = useRoute();
 let loading = ref(true);
 let fetchFailed = ref(false);
 let product: Product = null!;
 const variants = ref<Product[]>([]);
+const thumbnailURL = computed(() => getMediaURL(product.thumbnail));
 
 const contentReady = computed(() => !loading.value && !fetchFailed.value);
 
@@ -72,17 +74,17 @@ onMounted(() => {
       <div class="grid gap-4">
         <div>
           <img class="object-contain h-96 mx-auto rounded-lg"
-               :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+               :src="thumbnailURL"
                alt="Product thumbnail">
         </div>
         <hr>
         <div class="grid grid-cols-5 gap-4">
           <a target="_blank" class="border-2 rounded p-2"
-             :href="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+             :href="thumbnailURL"
              v-for="image in product.images" :key="image.id"
           >
             <img class="rounded-lg"
-                 :src="`http://127.0.0.1:8000/media/${product.thumbnail}`"
+                 :src="thumbnailURL"
                  alt="Alternate product image">
           </a>
         </div>
@@ -111,7 +113,7 @@ onMounted(() => {
                  class="mb-4 rounded-lg border border-gray-200 p-2 dark:border-gray-700 dark:bg-gray-800 flex"
             >
               <img class="rounded-lg h-12 w-auto"
-                   :src="`http://127.0.0.1:8000/media/${variant.thumbnail}`"
+                   :src="getMediaURL(variant.thumbnail)"
                    alt="">
               <ProductLink :product="variant" class="ml-7 my-auto font-medium"/>
             </div>
